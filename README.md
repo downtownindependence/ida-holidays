@@ -27,6 +27,7 @@ npm run build
 | Event filter helper | `src/lib/events.ts` |
 | Settings schema and validation | `src/lib/settings.ts` |
 | Date and form URL helpers | `src/lib/format.ts` |
+| Timezone handling for events | `src/lib/datetime.ts` |
 | Pages CMS field labels | `.pages.yml` |
 
 ## Restyling for the IDA brand
@@ -47,6 +48,15 @@ so visitors never see an empty box:
 
 The Saturday events section always renders. With no upcoming visible events it
 shows a friendly "Event details coming soon" message instead of a list.
+
+## Event times and timezones
+
+Pages CMS writes event times with no timezone attached, for example
+`2026-11-16T17:30`. Cloudflare builds the site on a server set to UTC, so
+reading those times with plain JavaScript would shift them by several hours.
+`src/lib/datetime.ts` reads them as Independence local time instead, which is
+what the person typing them into the CMS means. Event times are then displayed
+in `America/Los_Angeles` no matter where the visitor is.
 
 ## Window contest stages
 

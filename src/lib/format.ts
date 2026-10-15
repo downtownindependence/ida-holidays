@@ -1,5 +1,6 @@
-/** Independence, Oregon. All event times are shown in this zone. */
-export const SITE_TIME_ZONE = 'America/Los_Angeles';
+import { SITE_TIME_ZONE } from './datetime';
+
+export { SITE_TIME_ZONE };
 
 /**
  * Turn a plain "YYYY-MM-DD" string from Pages CMS into a Date without the

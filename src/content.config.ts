@@ -1,13 +1,18 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { parseEventDate } from './lib/datetime';
 
-// Phase 2 structure. Nothing from this collection is rendered yet.
+// Event times are written without a timezone by Pages CMS, so they are read as
+// Independence local time rather than as the build machine's time.
+const eventDateTime = z.preprocess(parseEventDate, z.date());
+
+// One markdown file per event, managed by board members in Pages CMS.
 const events = defineCollection({
   loader: glob({ base: './src/content/events', pattern: '**/*.{md,yaml,yml}' }),
   schema: z.object({
     name: z.string(),
-    start: z.coerce.date(),
-    end: z.coerce.date(),
+    start: eventDateTime,
+    end: eventDateTime,
     location: z.string(),
     category: z.enum(['IDA', 'City', 'Outside']),
     crowd: z.enum(['small', 'medium', 'large']),

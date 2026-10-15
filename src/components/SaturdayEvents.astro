@@ -121,6 +121,9 @@ const { events } = Astro.props;
 
   .event__description {
     margin: var(--space-4) 0 0;
+    /* Editors write multi paragraph descriptions in Pages CMS. Keep the line
+     * breaks they typed instead of running it all together. */
+    white-space: pre-line;
   }
 
   .event__action {
