@@ -1,0 +1,66 @@
+---
+import type { SantaPhotoSpot } from '../lib/settings';
+
+interface Props {
+  spots: SantaPhotoSpot[];
+}
+
+const { spots } = Astro.props;
+---
+
+<ul class="spots">
+  {
+    spots.map((spot) => (
+      <li class="spot">
+        <h3 class="spot__name">{spot.business}</h3>
+        <p class="spot__schedule">{spot.schedule}</p>
+        {spot.note && <p class="spot__note">{spot.note}</p>}
+        {spot.link && (
+          <p class="spot__action">
+            <a href={spot.link}>Details and hours</a>
+          </p>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .spots {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spot {
+    padding: var(--space-5) var(--space-6);
+    border: var(--border-hairline) solid var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .spot__name {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+
+  .spot__schedule {
+    margin: var(--space-2) 0 0;
+    font-weight: var(--weight-semibold);
+    color: var(--color-eyebrow);
+  }
+
+  .spot__note {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text);
+  }
+
+  .spot__action {
+    margin: var(--space-4) 0 0;
+    min-height: var(--tap-target-min);
+    display: flex;
+    align-items: center;
+  }
+</style>

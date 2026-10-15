@@ -1,0 +1,147 @@
+---
+import type { EventEntry } from '../lib/events';
+import { formatEventDate, formatEventTimeRange, toIsoString } from '../lib/format';
+
+interface Props {
+  events: EventEntry[];
+}
+
+const { events } = Astro.props;
+---
+
+{
+  events.length === 0 ? (
+    <p class="empty">
+      Event details coming soon. Check back shortly, or follow the Independence
+      Downtown Association for updates.
+    </p>
+  ) : (
+    <ol class="events">
+      {events.map((entry) => (
+        <li class="event">
+          <p class="event__date">
+            <time datetime={toIsoString(entry.data.start)}>
+              {formatEventDate(entry.data.start)}
+            </time>
+          </p>
+          <h3 class="event__name">{entry.data.name}</h3>
+          <p class="event__meta">
+            <span>{formatEventTimeRange(entry.data.start, entry.data.end)}</span>
+            <span class="event__dot" aria-hidden="true">
+              •
+            </span>
+            <span>{entry.data.location}</span>
+          </p>
+          <p class="event__description">{entry.data.description}</p>
+          {entry.data.link && (
+            <p class="event__action">
+              <a
+                class="button"
+                href={entry.data.link}
+                aria-label={`More details about ${entry.data.name}`}
+              >
+                More details
+              </a>
+            </p>
+          )}
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+<style>
+  .empty {
+    margin: 0;
+    padding: var(--space-6);
+    border: var(--border-hairline) dashed var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-strong);
+    text-align: center;
+    color: var(--color-text);
+  }
+
+  .events {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .event {
+    padding: var(--space-6);
+    border: var(--border-hairline) solid var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+
+  .event__date {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+
+  .event__name {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  /* Stacked on a phone, where a time and a street address rarely fit on one
+   * line together. Side by side with a separator once there is room. */
+  .event__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .event__dot {
+    display: none;
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 30rem) {
+    .event__meta {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .event__dot {
+      display: inline;
+    }
+  }
+
+  .event__description {
+    margin: var(--space-4) 0 0;
+  }
+
+  .event__action {
+    margin: var(--space-5) 0 0;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-target-min);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+
+  .button:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-accent-contrast);
+  }
+</style>

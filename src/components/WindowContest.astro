@@ -1,0 +1,364 @@
+---
+import type { HolidaySettings } from '../lib/settings';
+import {
+  formatPlainDate,
+  toEmbeddableFormUrl,
+  toPlainFormUrl,
+} from '../lib/format';
+
+interface Props {
+  settings: HolidaySettings;
+}
+
+const { settings } = Astro.props;
+const {
+  contestStage,
+  contestCategories,
+  participatingBusinesses,
+  votingDeadline,
+  votingFormUrl,
+  winners,
+} = settings;
+
+const embedUrl = votingFormUrl ? toEmbeddableFormUrl(votingFormUrl) : null;
+const plainUrl = votingFormUrl ? toPlainFormUrl(votingFormUrl) : null;
+const deadlineText = votingDeadline ? formatPlainDate(votingDeadline) : null;
+---
+
+<div class="contest">
+  <p class="contest__lead">
+    Downtown shops dress their windows for the season, and you pick the
+    favorites. Walk Main Street, see what the businesses have put together, and
+    cast your vote.
+  </p>
+
+  <div class="facts">
+    <p class="facts__item">
+      <strong>$100 prize per category.</strong> Each business can win once.
+    </p>
+    <p class="facts__item">
+      <strong>Decorations stay up through January 1,</strong> so there is plenty
+      of time to see them all.
+    </p>
+  </div>
+
+  {
+    contestCategories.length > 0 && (
+      <div class="block">
+        <h3 class="block__title">Categories</h3>
+        <ul class="categories">
+          {contestCategories.map((category) => (
+            <li class="category">{category}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  {
+    participatingBusinesses.length > 0 && (
+      <div class="block">
+        <h3 class="block__title">Participating businesses</h3>
+        <p class="block__note">Plan your window walk.</p>
+        <ul class="businesses">
+          {participatingBusinesses.map((business) => (
+            <li class="business">
+              <span class="business__name">
+                {business.link ? (
+                  <a href={business.link}>{business.name}</a>
+                ) : (
+                  business.name
+                )}
+              </span>
+              {business.address && (
+                <span class="business__address">{business.address}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <div class="stage">
+    {
+      contestStage === 'coming-soon' && (
+        <div class="stage__card">
+          <p class="stage__headline">Voting opens Saturday, Nov 28</p>
+          <p class="stage__text">
+            Come back here once the windows are up and the ballot is open.
+          </p>
+        </div>
+      )
+    }
+
+    {
+      contestStage === 'voting-open' && (
+        <div class="stage__card stage__card--open">
+          <p class="stage__headline">Voting is open</p>
+          {deadlineText && (
+            <p class="stage__text">
+              Cast your vote by <strong>{deadlineText}</strong>.
+            </p>
+          )}
+          <p class="stage__fineprint">
+            One vote per email address. Duplicates are removed before counting.
+          </p>
+          {embedUrl ? (
+            <>
+              <div class="form-embed">
+                <iframe
+                  src={embedUrl}
+                  title="Storefront Window Display Contest ballot"
+                  loading="lazy"
+                >
+                  Loading the ballot
+                </iframe>
+              </div>
+              {plainUrl && (
+                <p class="form-fallback">
+                  Form not loading? <a href={plainUrl}>Open the ballot in a new tab</a>.
+                </p>
+              )}
+            </>
+          ) : (
+            <p class="stage__text">
+              The ballot link is being added. Check back shortly.
+            </p>
+          )}
+        </div>
+      )
+    }
+
+    {
+      contestStage === 'voting-closed' && (
+        <div class="stage__card">
+          <p class="stage__headline">Voting is closed</p>
+          <p class="stage__text">Winners announced the week of January 4.</p>
+        </div>
+      )
+    }
+
+    {
+      contestStage === 'winners' &&
+        (winners.length > 0 ? (
+          <div class="winners">
+            <p class="stage__headline">And the winners are</p>
+            <ul class="winners__list">
+              {winners.map((winner) => (
+                <li class="winner">
+                  {winner.photo && (
+                    <img
+                      class="winner__photo"
+                      src={winner.photo}
+                      alt={`The winning window display at ${winner.business}`}
+                      loading="lazy"
+                    />
+                  )}
+                  <div class="winner__body">
+                    <p class="winner__category">{winner.category}</p>
+                    <p class="winner__business">{winner.business}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div class="stage__card">
+            <p class="stage__headline">Winners coming shortly</p>
+            <p class="stage__text">
+              The results are being finalized. Check back soon.
+            </p>
+          </div>
+        ))
+    }
+  </div>
+</div>
+
+<style>
+  .contest__lead {
+    margin: 0;
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-strong);
+  }
+
+  .facts__item {
+    margin: 0;
+  }
+
+  .facts__item strong {
+    color: var(--color-heading);
+  }
+
+  .block {
+    margin-top: var(--space-10);
+  }
+
+  .block__title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-lg);
+  }
+
+  .block__note {
+    margin: calc(var(--space-4) * -1) 0 var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .category {
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-hairline) solid var(--color-badge-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-badge-bg);
+    color: var(--color-badge-text);
+    font-size: var(--text-sm);
+  }
+
+  .businesses {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .business {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+    min-height: var(--tap-target-min);
+    padding-block: var(--space-2);
+    border-bottom: var(--border-hairline) solid var(--color-rule);
+  }
+
+  .business:last-child {
+    border-bottom: none;
+  }
+
+  .business__name {
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+
+  .business__address {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .stage {
+    margin-top: var(--space-10);
+  }
+
+  .stage__card {
+    padding: var(--space-6);
+    border: var(--border-hairline) solid var(--color-surface-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .stage__card--open {
+    text-align: left;
+  }
+
+  .stage__headline {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: var(--color-heading);
+  }
+
+  .stage__text {
+    margin: var(--space-3) 0 0;
+  }
+
+  .stage__text strong {
+    color: var(--color-heading);
+  }
+
+  .stage__fineprint {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .form-embed {
+    margin-top: var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-strong);
+    overflow: hidden;
+  }
+
+  .form-embed iframe {
+    display: block;
+    width: 100%;
+    height: clamp(40rem, 80svh, 60rem);
+    border: 0;
+  }
+
+  .form-fallback {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .winners__list {
+    display: grid;
+    gap: var(--space-5);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .winner {
+    overflow: hidden;
+    border: var(--border-hairline) solid var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .winner__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .winner__body {
+    padding: var(--space-5) var(--space-6);
+  }
+
+  .winner__category {
+    margin: 0;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+
+  .winner__business {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    color: var(--color-heading);
+  }
+</style>

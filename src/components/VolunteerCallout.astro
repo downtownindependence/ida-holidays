@@ -1,0 +1,75 @@
+---
+import type { VolunteerCallout } from '../lib/settings';
+
+interface Props {
+  callout: VolunteerCallout;
+}
+
+const { callout } = Astro.props;
+---
+
+<div class="callout">
+  {callout.date && <p class="callout__date">{callout.date}</p>}
+  {callout.headline && <h3 class="callout__headline">{callout.headline}</h3>}
+  {callout.text && <p class="callout__text">{callout.text}</p>}
+  {
+    callout.link && (
+      <p class="callout__action">
+        <a class="button" href={callout.link}>
+          Count me in
+        </a>
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .callout {
+    padding: var(--space-8) var(--space-6);
+    border: var(--border-hairline) solid var(--color-surface-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .callout__date {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+
+  .callout__headline {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .callout__text {
+    margin: var(--space-4) auto 0;
+    max-width: 32rem;
+  }
+
+  .callout__action {
+    margin: var(--space-6) 0 0;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-target-min);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+
+  .button:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-accent-contrast);
+  }
+</style>

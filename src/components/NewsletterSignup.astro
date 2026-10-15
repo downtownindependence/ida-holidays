@@ -1,0 +1,119 @@
+---
+/*
+ * ===========================================================================
+ * NEWSLETTER SIGNUP (EmailOctopus)
+ *
+ * TO TURN THIS SECTION ON, DO TWO THINGS:
+ *
+ *   1. Change NEWSLETTER_ENABLED below from false to true.
+ *   2. Paste your EmailOctopus embed snippet between the two
+ *      "PASTE EMAILOCTOPUS EMBED" comment lines further down.
+ *
+ * While NEWSLETTER_ENABLED is false the whole section is left off the page,
+ * so visitors never see an empty box.
+ *
+ * Two notes about pasting the snippet:
+ *   - If the snippet contains a <script src="..."> tag, add is:inline to it,
+ *     like <script is:inline src="...">, so Astro passes it through untouched.
+ *   - If you use the EmailOctopus iframe embed instead, give the iframe
+ *     width="100%" so it still fits a phone screen.
+ * ===========================================================================
+ */
+
+const NEWSLETTER_ENABLED = false;
+---
+
+{
+  NEWSLETTER_ENABLED && (
+    <section class="section" id="newsletter" aria-labelledby="newsletter-heading">
+      <div class="newsletter">
+        <h2 class="newsletter__title" id="newsletter-heading">Stay in the loop</h2>
+        <p class="newsletter__text">
+          Get downtown Independence news, event reminders, and holiday updates
+          in your inbox.
+        </p>
+
+        <div class="newsletter__form">
+          {/* ---------- PASTE EMAILOCTOPUS EMBED BELOW THIS LINE ---------- */}
+
+          {/* ---------- PASTE EMAILOCTOPUS EMBED ABOVE THIS LINE ---------- */}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .section {
+    padding-block: var(--section-gap);
+    padding-inline: var(--page-gutter);
+  }
+
+  .section > .newsletter {
+    max-width: var(--content-max);
+    margin-inline: auto;
+  }
+
+  .newsletter {
+    padding: var(--space-8) var(--space-6);
+    border: var(--border-hairline) solid var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .newsletter__title {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .newsletter__text {
+    margin: var(--space-4) auto 0;
+    max-width: 32rem;
+  }
+
+  .newsletter__form {
+    margin-top: var(--space-6);
+  }
+
+  /* Give whatever EmailOctopus renders a readable width and tappable
+   * controls, without needing to know its exact class names. */
+  .newsletter__form :global(form) {
+    max-width: 26rem;
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .newsletter__form :global(input),
+  .newsletter__form :global(button) {
+    min-height: var(--tap-target-min);
+    font-size: var(--text-base);
+    font-family: var(--font-body);
+  }
+
+  .newsletter__form :global(input[type='email']),
+  .newsletter__form :global(input[type='text']) {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-hairline) solid var(--color-surface-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-heading);
+  }
+
+  .newsletter__form :global(button) {
+    width: 100%;
+    margin-top: var(--space-3);
+    padding: var(--space-3) var(--space-6);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+  }
+
+  .newsletter__form :global(button:hover) {
+    background: var(--color-accent-hover);
+  }
+</style>

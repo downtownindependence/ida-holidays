@@ -1,0 +1,62 @@
+---
+interface Props {
+  title: string;
+  dateline: string;
+}
+
+const { title, dateline } = Astro.props;
+---
+
+<header class="hero">
+  <div class="hero__inner">
+    <p class="hero__eyebrow">Independence Downtown Association</p>
+    <h1>{title}</h1>
+    <p class="hero__dateline">{dateline}</p>
+    <div class="hero__rule" aria-hidden="true"></div>
+  </div>
+</header>
+
+<style>
+  .hero {
+    padding-block: clamp(var(--space-12), 10vw, var(--space-16));
+    padding-inline: var(--page-gutter);
+    text-align: center;
+  }
+
+  .hero__inner {
+    max-width: var(--hero-max);
+    margin-inline: auto;
+  }
+
+  .hero__eyebrow {
+    margin: 0 0 var(--space-5);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-eyebrow);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+  }
+
+  .hero__dateline {
+    margin: var(--space-5) auto 0;
+    font-size: var(--text-lg);
+    color: var(--color-text);
+  }
+
+  .hero__rule {
+    width: 4.5rem;
+    height: 2px;
+    margin: var(--space-8) auto 0;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(
+      90deg,
+      var(--color-accent-secondary),
+      var(--color-accent)
+    );
+  }
+</style>

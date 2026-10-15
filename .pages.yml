@@ -3,8 +3,157 @@ media:
   output: /uploads
 
 content:
+  - name: holiday_settings
+    label: Holiday Page Settings
+    type: file
+    path: src/data/holiday-settings.json
+    description: Everything on the holiday page except the Saturday events themselves.
+    fields:
+      - name: contestStage
+        label: Window contest stage
+        type: select
+        required: true
+        default: coming-soon
+        description: Controls which contest block visitors see. Change this as the contest moves along.
+        options:
+          values:
+            - { value: coming-soon, label: 'Coming soon' }
+            - { value: voting-open, label: 'Voting open' }
+            - { value: voting-closed, label: 'Voting closed' }
+            - { value: winners, label: 'Winners' }
+
+      - name: votingDeadline
+        label: Voting deadline
+        type: date
+        required: false
+        options:
+          format: 'yyyy-MM-dd'
+        description: Shown on the page while voting is open.
+
+      - name: votingFormUrl
+        label: Google Form link
+        type: string
+        required: false
+        pattern:
+          regex: '^$|^https?://.+'
+          message: 'Leave blank, or paste a full web address starting with https://'
+        description: Paste the Google Form link. The page embeds it automatically once the stage is set to Voting open.
+
+      - name: contestCategories
+        label: Contest categories
+        type: string
+        list: true
+        description: One category per line. These appear as badges on the page.
+
+      - name: participatingBusinesses
+        label: Participating businesses
+        type: object
+        list:
+          collapsible:
+            summary: '{fields.name}'
+        description: Businesses with a decorated window, so visitors can plan a window walk.
+        fields:
+          - name: name
+            label: Business name
+            type: string
+            required: true
+          - name: address
+            label: Address
+            type: string
+            required: false
+            description: Optional. For example "180 S Main St".
+          - name: link
+            label: Website or Facebook page
+            type: string
+            required: false
+            pattern:
+              regex: '^$|^https?://.+'
+              message: 'Leave blank, or paste a full web address starting with https://'
+
+      - name: santaPhotoSpots
+        label: Santa photo spots
+        type: object
+        list:
+          collapsible:
+            summary: '{fields.business}'
+        description: Leave this empty and the Santa section stays off the page.
+        fields:
+          - name: business
+            label: Business name
+            type: string
+            required: true
+          - name: schedule
+            label: Dates and times
+            type: string
+            required: true
+            description: For example "Saturdays, Dec 5 and Dec 12, 11 AM to 2 PM".
+          - name: link
+            label: Website or Facebook page
+            type: string
+            required: false
+            pattern:
+              regex: '^$|^https?://.+'
+              message: 'Leave blank, or paste a full web address starting with https://'
+          - name: note
+            label: Note
+            type: text
+            required: false
+            description: Optional. For example "free photos, bring your own camera".
+
+      - name: winners
+        label: Contest winners
+        type: object
+        list:
+          collapsible:
+            summary: '{fields.category}'
+        description: Only shown once the contest stage is set to Winners.
+        fields:
+          - name: category
+            label: Category
+            type: string
+            required: true
+          - name: business
+            label: Winning business
+            type: string
+            required: true
+          - name: photo
+            label: Photo of the window
+            type: image
+            required: false
+
+      - name: volunteerCallout
+        label: Volunteer callout
+        type: object
+        description: An optional box near the bottom of the page, for things like the wreath lighting volunteer party.
+        fields:
+          - name: show
+            label: Show on the website
+            type: boolean
+            default: false
+            description: Turn this off to hide the callout without deleting what you wrote.
+          - name: headline
+            label: Headline
+            type: string
+            required: false
+          - name: date
+            label: Date
+            type: string
+            required: false
+            description: Free text, for example "Thursday, Dec 4 at 6 PM".
+          - name: text
+            label: Short text
+            type: text
+            required: false
+          - name: link
+            label: Sign up link
+            type: string
+            required: false
+            pattern:
+              regex: '^$|^https?://.+'
+              message: 'Leave blank, or paste a full web address starting with https://'
+
   - name: events
-    label: Events
+    label: Saturday Events
     type: collection
     path: src/content/events
     filename: '{fields.name}.md'
@@ -78,7 +227,7 @@ content:
         label: Tips for businesses
         type: text
         required: false
-        description: Optional. Internal guidance, for example "stay open until 8 pm".
+        description: Optional. Internal guidance, for example "stay open until 8 pm". Not shown on the site.
       - name: visible
         label: Show on the website
         type: boolean

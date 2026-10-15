@@ -1,0 +1,21 @@
+{
+  "contestStage": "coming-soon",
+  "votingDeadline": "2027-01-01",
+  "votingFormUrl": "",
+  "contestCategories": [
+    "People's Choice",
+    "Best Use of Merchandise Display",
+    "Best Use of Light",
+    "Category 4 (name coming soon)"
+  ],
+  "participatingBusinesses": [],
+  "santaPhotoSpots": [],
+  "winners": [],
+  "volunteerCallout": {
+    "show": false,
+    "headline": "",
+    "date": "",
+    "text": "",
+    "link": ""
+  }
+}
