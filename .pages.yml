@@ -7,7 +7,7 @@ content:
     label: Holiday Page Settings
     type: file
     path: src/data/holiday-settings.json
-    description: Everything on the holiday page except the Saturday events themselves.
+    description: Everything on the holiday page except the events themselves.
     fields:
       - name: contestStage
         label: Window contest stage
@@ -153,7 +153,7 @@ content:
               message: 'Leave blank, or paste a full web address starting with https://'
 
   - name: events
-    label: Saturday Events
+    label: Events
     type: collection
     path: src/content/events
     filename: '{fields.name}.md'

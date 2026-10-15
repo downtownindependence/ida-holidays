@@ -22,7 +22,7 @@ npm run build
 | Page assembly | `src/pages/index.astro` |
 | Page sections | `src/components/` |
 | Holiday page settings | `src/data/holiday-settings.json` |
-| Saturday events | `src/content/events/` |
+| Events | `src/content/events/` |
 | Event schema | `src/content.config.ts` |
 | Event filter helper | `src/lib/events.ts` |
 | Settings schema and validation | `src/lib/settings.ts` |
@@ -46,8 +46,12 @@ so visitors never see an empty box:
 - Volunteer callout: hidden unless "Show on the website" is turned on
 - Newsletter signup: hidden until it is enabled in code (see below)
 
-The Saturday events section always renders. With no upcoming visible events it
-shows a friendly "Event details coming soon" message instead of a list.
+The events section always renders. With no upcoming visible events it shows a
+friendly "Event details coming soon" message instead of a list.
+
+The section is headed "Upcoming events" rather than "Saturday events", because
+the program also includes dates that are not Saturdays, such as the November
+community meeting.
 
 ## Event times and timezones
 

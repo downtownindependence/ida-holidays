@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Section from '../components/Section.astro';
-import SaturdayEvents from '../components/SaturdayEvents.astro';
+import EventList from '../components/EventList.astro';
 import SantaSpots from '../components/SantaSpots.astro';
 import WindowContest from '../components/WindowContest.astro';
 import VolunteerCallout from '../components/VolunteerCallout.astro';
@@ -25,8 +25,8 @@ const showVolunteerCallout = isVolunteerCalloutVisible(settings.volunteerCallout
   <Hero title={title} dateline={dateline} />
 
   <main id="main">
-    <Section id="events" eyebrow="What is happening" title="Saturday events">
-      <SaturdayEvents events={events} />
+    <Section id="events" eyebrow="Mark your calendar" title="Upcoming events">
+      <EventList events={events} />
     </Section>
 
     {
