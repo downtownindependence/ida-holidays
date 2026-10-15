@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Downtown Independence Holidays 2026';
+const description =
+  'Saturdays, Nov 28 to Dec 19. Holiday events, Santa, and the Storefront Window Display Contest in downtown Independence.';
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="page">
+    <div class="card">
+      <p class="eyebrow">Independence Downtown Association</p>
+      <h1>Downtown Independence Holidays 2026</h1>
+      <p class="subhead">
+        Saturdays, Nov 28 to Dec 19. Holiday events, Santa, and the Storefront
+        Window Display Contest. Full details coming soon.
+      </p>
+      <div class="rule" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Presented by the <a href="https://downtownindependence.com">Independence Downtown Association</a>
+    </p>
+  </footer>
+</BaseLayout>
+
+<style>
+  .page {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.25rem 1.5rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 34rem;
+    text-align: center;
+  }
+
+  .eyebrow {
+    margin: 0 0 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 9vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+    text-wrap: balance;
+  }
+
+  .subhead {
+    margin: 1.25rem auto 0;
+    max-width: 30rem;
+    font-size: clamp(1rem, 4.2vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--cream-dim);
+    text-wrap: pretty;
+  }
+
+  .rule {
+    width: 4.5rem;
+    height: 2px;
+    margin: 2rem auto 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--cranberry), var(--gold));
+  }
+
+  .footer {
+    padding: 1.5rem 1.25rem calc(1.75rem + env(safe-area-inset-bottom));
+    text-align: center;
+  }
+
+  .footer p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--cream-faint);
+  }
+
+  .footer a {
+    color: var(--cream-dim);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(214, 168, 90, 0.6);
+  }
+
+  .footer a:hover {
+    color: var(--gold);
+  }
+</style>

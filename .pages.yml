@@ -1,0 +1,91 @@
+media:
+  input: public/uploads
+  output: /uploads
+
+content:
+  - name: events
+    label: Events
+    type: collection
+    path: src/content/events
+    filename: '{fields.name}.md'
+    view:
+      fields: [name, start, location, category, visible]
+      primary: name
+      sort: [start, name]
+    fields:
+      - name: name
+        label: Event name
+        type: string
+        required: true
+        description: Shown as the event title, for example "Santa at the Depot".
+      - name: start
+        label: Starts
+        type: date
+        required: true
+        options:
+          format: "yyyy-MM-dd'T'HH:mm"
+          time: true
+        description: Date and start time of the event.
+      - name: end
+        label: Ends
+        type: date
+        required: true
+        options:
+          format: "yyyy-MM-dd'T'HH:mm"
+          time: true
+        description: Date and end time. The event drops off the site once this passes.
+      - name: location
+        label: Location
+        type: string
+        required: true
+        description: Where it happens, for example "Main Street Plaza".
+      - name: category
+        label: Category
+        type: select
+        required: true
+        default: IDA
+        options:
+          values:
+            - { value: IDA, label: 'IDA event' }
+            - { value: City, label: 'City of Independence event' }
+            - { value: Outside, label: 'Outside organizer' }
+        description: Who is putting the event on.
+      - name: crowd
+        label: Expected crowd
+        type: select
+        required: true
+        default: medium
+        options:
+          values:
+            - { value: small, label: 'Small' }
+            - { value: medium, label: 'Medium' }
+            - { value: large, label: 'Large' }
+        description: Rough size, so downtown businesses can plan staffing.
+      - name: description
+        label: Short description
+        type: text
+        required: true
+        description: One or two sentences for the public listing.
+      - name: link
+        label: More info link
+        type: string
+        required: false
+        pattern:
+          regex: '^https?://.+'
+          message: 'Enter a full web address starting with https://'
+        description: Optional. A registration form, Facebook event, or business page.
+      - name: businessTips
+        label: Tips for businesses
+        type: text
+        required: false
+        description: Optional. Internal guidance, for example "stay open until 8 pm".
+      - name: visible
+        label: Show on the website
+        type: boolean
+        default: true
+        description: Turn this off to hide the event without deleting it.
+      - name: body
+        label: Extra details
+        type: rich-text
+        required: false
+        description: Optional. Longer notes. Not shown on the site yet.
