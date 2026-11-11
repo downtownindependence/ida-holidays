@@ -68,6 +68,8 @@ These REPLACE the older four-category contest that is currently on the live page
 Events collection fields are shared with the future "Downtown Footfall Calendar": name, start/end date and time, location, category (IDA / City / Outside), expected crowd (small / medium / large), link, tips for businesses, short public description, show/hide toggle. Past events hide automatically.
 
 ## The two Google Forms (built Nov 11, in the info@downtownindependence.com Google account)
+- Both forms and their response Sheets live in Google Drive: My Drive > Events > Season of Lights (https://drive.google.com/drive/folders/1WxhuO-u-jyNrrZ0jjIVKxm1n2LCAXojZ), next to Hop & Heritage. They share the Events folder's access.
+- Site went live with the forms connected on Nov 11. Direct link for businesses: https://holidays.downtownindependence.com/#signup (works while the contest stage is Coming soon).
 - "Season of Lights: Business Sign-Up". Editor: https://docs.google.com/forms/d/1YFHBOOIEPghlItJ7QOjcfakdRDJqTgXOzNIrTnaomUg/edit . 7 short-answer questions (Business name, Contact name, Email, Phone, Business address, Website or Facebook page, Notes), none required, linked to a Google Sheet of the same name, published to anyone with the link.
 - "Season of Lights: Window Contest Votes". Editor: https://docs.google.com/forms/d/1ZtjimrIXhjDZqbmWSTHLATUWBHo3syiJ2q7ha-Squ9Q/edit . 5 short-answer questions (Email, Favorite window 1, 2, 3, Newsletter), none required, linked to a Google Sheet of the same name, published to anyone with the link.
 - Both pre-filled links are in src/data/holiday-settings.json (CMS fields). If a question is added, removed, or retyped in either form, its entry ids change and the pre-filled link must be remade.
