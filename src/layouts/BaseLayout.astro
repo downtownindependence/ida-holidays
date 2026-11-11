@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 import '../styles/tokens.css';
 import { THEME_COLOR } from '../lib/theme';
 
@@ -8,6 +9,8 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+// Shown when someone shares the link on Facebook, in a text, and so on.
+const shareImage = new URL('/images/share.jpg', Astro.site).toString();
 ---
 
 <!doctype html>
@@ -22,7 +25,18 @@ const { title, description } = Astro.props;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.site?.toString()} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Season of Lights in red and gold script" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <Font cssVariable="--font-pompiere" preload />
+    <Font cssVariable="--font-oswald" preload />
+    <Font cssVariable="--font-montserrat" preload />
+    <Font cssVariable="--font-barlow-condensed" />
+    <Font cssVariable="--font-dancing-script" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the main content</a>
@@ -58,19 +72,6 @@ const { title, description } = Astro.props;
     line-height: var(--leading-normal);
     color: var(--color-text);
     background-color: var(--color-bg);
-    background-image:
-      radial-gradient(
-        ellipse 80% 40% at 50% -5%,
-        var(--color-bg-glow-warm),
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 70% 35% at 50% 105%,
-        var(--color-bg-glow-accent),
-        transparent 70%
-      ),
-      linear-gradient(170deg, var(--color-bg-gradient-top) 0%, var(--color-bg) 60%);
-    background-repeat: no-repeat;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -78,7 +79,7 @@ const { title, description } = Astro.props;
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: var(--weight-semibold);
+    font-weight: var(--weight-regular);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
     color: var(--color-heading);
@@ -109,6 +110,43 @@ const { title, description } = Astro.props;
     outline: 2px solid var(--color-focus);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
+  }
+
+  /* Shared button styles, used by events, the contest and the callouts. */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--tap-target-min);
+    padding: var(--space-2) var(--space-6);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-accent-contrast);
+  }
+
+  .button--red {
+    background: var(--color-accent-secondary);
+    color: var(--color-accent-secondary-contrast);
+  }
+
+  .button--red:hover {
+    background: var(--color-accent-secondary-hover);
+    color: var(--color-accent-secondary-contrast);
   }
 
   .skip-link {

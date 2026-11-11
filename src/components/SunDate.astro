@@ -1,0 +1,92 @@
+---
+/*
+ * The cream date circle with a sunburst around it, from the flyer.
+ * Month small on top, day large underneath.
+ */
+import { formatMonthShort, formatDayNumber, toIsoString, formatEventDate } from '../lib/format';
+
+interface Props {
+  date: Date;
+}
+
+const { date } = Astro.props;
+const rays = Array.from({ length: 16 }, (_, index) => index * 22.5);
+---
+
+<div class="sun">
+  <svg class="sun__rays" viewBox="0 0 120 120" aria-hidden="true">
+    {
+      rays.map((angle, index) => {
+        // Long rays on the four main directions, short ones in between,
+        // tapering to a point like the flyer's sunburst.
+        const long = index % 4 === 0;
+        const medium = index % 2 === 0;
+        const outer = long ? 60 : medium ? 52 : 47;
+        const width = long ? 3.2 : 2.2;
+        return (
+          <polygon
+            points={`${60 - width / 2},${60 - 41} ${60 + width / 2},${60 - 41} 60,${60 - outer}`}
+            transform={`rotate(${angle} 60 60)`}
+          />
+        );
+      })
+    }
+  </svg>
+  <time class="sun__face" datetime={toIsoString(date)}>
+    <span class="sun__month" aria-hidden="true">{formatMonthShort(date)}</span>
+    <span class="sun__day" aria-hidden="true">{formatDayNumber(date)}</span>
+    <span class="visually-hidden">{formatEventDate(date)}</span>
+  </time>
+</div>
+
+<style>
+  .sun {
+    position: relative;
+    width: 7.5rem;
+    aspect-ratio: 1;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .sun__rays {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: var(--color-sun);
+  }
+
+  .sun__face {
+    position: absolute;
+    inset: 22%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    border-radius: 50%;
+    background: var(--color-sun);
+    color: var(--color-sun-text);
+    line-height: 1;
+  }
+
+  .sun__month {
+    font-family: var(--font-label);
+    font-weight: var(--weight-medium);
+    font-size: 0.8rem;
+    letter-spacing: var(--tracking-label);
+  }
+
+  .sun__day {
+    font-family: var(--font-display);
+    font-size: 2.3rem;
+    line-height: 0.95;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

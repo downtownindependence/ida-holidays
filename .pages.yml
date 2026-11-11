@@ -14,36 +14,62 @@ content:
         type: select
         required: true
         default: coming-soon
-        description: Controls which contest block visitors see. Change this as the contest moves along.
+        description: Controls what the contest section shows. Nothing changes on its own, so switch this on Nov 28 (Voting open), when voting ends (Voting closed), and when results are in (Winners).
         options:
           values:
-            - { value: coming-soon, label: 'Coming soon' }
+            - { value: coming-soon, label: 'Coming soon (business sign-up)' }
             - { value: voting-open, label: 'Voting open' }
             - { value: voting-closed, label: 'Voting closed' }
             - { value: winners, label: 'Winners' }
 
+      - name: businessSignupUrl
+        label: Business sign-up form link
+        type: string
+        required: false
+        pattern:
+          regex: '^$|^https?://.+'
+          message: 'Leave blank, or paste a full web address starting with https://'
+        description: The Google Form businesses use to enter the contest. Shown as a button while the stage is Coming soon.
+
+      - name: signupDeadline
+        label: Business sign-up deadline
+        type: date
+        required: false
+        options:
+          format: 'yyyy-MM-dd'
+
+      - name: votingOpens
+        label: Voting opens
+        type: date
+        required: false
+        options:
+          format: 'yyyy-MM-dd'
+        description: Shown as "Voting opens Saturday, November 28" while the stage is Coming soon.
+
       - name: votingDeadline
-        label: Voting deadline
+        label: Last day to vote
         type: date
         required: false
         options:
           format: 'yyyy-MM-dd'
         description: Shown on the page while voting is open.
 
+      - name: winnersAnnounced
+        label: Winners announced the week of
+        type: date
+        required: false
+        options:
+          format: 'yyyy-MM-dd'
+        description: Shown as "Winners will be announced the week of December 28" once voting is closed.
+
       - name: votingFormUrl
-        label: Google Form link
+        label: Voting form link (pre-filled)
         type: string
         required: false
         pattern:
           regex: '^$|^https?://.+'
           message: 'Leave blank, or paste a full web address starting with https://'
-        description: Paste the Google Form link. The page embeds it automatically once the stage is set to Voting open.
-
-      - name: contestCategories
-        label: Contest categories
-        type: string
-        list: true
-        description: One category per line. These appear as badges on the page.
+        description: In Google Forms, open the ⋮ menu, choose "Get pre-filled link", tick any one business, then "Get link" and paste it here. The site uses it to give every business card a "Vote for this window" button with that business already ticked. A plain form link also works, but then the buttons just open the empty ballot.
 
       - name: participatingBusinesses
         label: Participating businesses
@@ -51,12 +77,13 @@ content:
         list:
           collapsible:
             summary: '{fields.name}'
-        description: Businesses with a decorated window, so visitors can plan a window walk.
+        description: Businesses with a decorated window. During voting each one becomes a card with a vote button. Type each name exactly as it appears in the voting form.
         fields:
           - name: name
             label: Business name
             type: string
             required: true
+            description: Must match the choice in the voting form exactly, including capital letters and punctuation.
           - name: address
             label: Address
             type: string
@@ -69,6 +96,11 @@ content:
             pattern:
               regex: '^$|^https?://.+'
               message: 'Leave blank, or paste a full web address starting with https://'
+          - name: photo
+            label: Photo of the window
+            type: image
+            required: false
+            description: Optional. A wide photo works best.
 
       - name: santaPhotoSpots
         label: Santa photo spots
@@ -105,13 +137,18 @@ content:
         type: object
         list:
           collapsible:
-            summary: '{fields.category}'
-        description: Only shown once the contest stage is set to Winners.
+            summary: '{fields.business}'
+        description: Only shown once the contest stage is set to Winners. Add up to three.
         fields:
-          - name: category
-            label: Category
-            type: string
+          - name: place
+            label: Place
+            type: select
             required: true
+            options:
+              values:
+                - { value: '1', label: '1st place ($150)' }
+                - { value: '2', label: '2nd place ($75)' }
+                - { value: '3', label: '3rd place ($50)' }
           - name: business
             label: Winning business
             type: string
@@ -166,7 +203,7 @@ content:
         label: Event name
         type: string
         required: true
-        description: Shown as the event title, for example "Santa at the Depot".
+        description: Shown as the event title, for example "Santa Train". A lowercase "and" in the name, like "Cocoa Station and Photo Booth", is set in script on its own line, like the flyer.
       - name: start
         label: Starts
         type: date
@@ -174,7 +211,7 @@ content:
         options:
           format: "yyyy-MM-dd'T'HH:mm"
           time: true
-        description: Date and start time of the event.
+        description: Date and start time of the event. Events on the same day are grouped under one date circle.
       - name: end
         label: Ends
         type: date
@@ -183,11 +220,26 @@ content:
           format: "yyyy-MM-dd'T'HH:mm"
           time: true
         description: Date and end time. The event drops off the site once this passes.
+      - name: timeText
+        label: Custom time text
+        type: string
+        required: false
+        description: Optional. Replaces the start and end times on the page, for times like "9AM or 12PM". Leave blank to show the start and end times.
       - name: location
         label: Location
         type: string
         required: true
-        description: Where it happens, for example "Main Street Plaza".
+        description: Where it happens, for example "Riverfront Park".
+      - name: cost
+        label: Cost
+        type: string
+        required: false
+        description: Optional. Shown after the location, for example "FREE" or "$10".
+      - name: highlight
+        label: Highlight
+        type: string
+        required: false
+        description: Optional. A short perk shown in slanted type, for example "Free Santa hats".
       - name: category
         label: Category
         type: select
@@ -198,7 +250,7 @@ content:
             - { value: IDA, label: 'IDA event' }
             - { value: City, label: 'City of Independence event' }
             - { value: Outside, label: 'Outside organizer' }
-        description: Who is putting the event on.
+        description: Who is putting the event on. Not shown on the site.
       - name: crowd
         label: Expected crowd
         type: select
@@ -209,7 +261,7 @@ content:
             - { value: small, label: 'Small' }
             - { value: medium, label: 'Medium' }
             - { value: large, label: 'Large' }
-        description: Rough size, so downtown businesses can plan staffing.
+        description: Rough size, so downtown businesses can plan staffing. Not shown on the site.
       - name: description
         label: Short description
         type: text
@@ -222,7 +274,7 @@ content:
         pattern:
           regex: '^https?://.+'
           message: 'Enter a full web address starting with https://'
-        description: Optional. A registration form, Facebook event, or business page.
+        description: Optional. A ticket page, registration form, or Facebook event. Shows a "More details" button.
       - name: businessTips
         label: Tips for businesses
         type: text

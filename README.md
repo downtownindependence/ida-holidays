@@ -26,16 +26,34 @@ npm run build
 | Event schema | `src/content.config.ts` |
 | Event filter helper | `src/lib/events.ts` |
 | Settings schema and validation | `src/lib/settings.ts` |
-| Date and form URL helpers | `src/lib/format.ts` |
+| Date, time and voting link helpers | `src/lib/format.ts` |
 | Timezone handling for events | `src/lib/datetime.ts` |
 | Pages CMS field labels | `.pages.yml` |
+| Fonts (free matches for the flyer's fonts) | `astro.config.mjs` |
+| "Season of lights" headline picture | `public/images/season-of-lights.webp` |
+| Link preview picture for social media | `public/images/share.jpg` |
 
-## Restyling for the IDA brand
+## Look and feel
 
-Every color, font family and key spacing value is defined once, in
-`src/styles/tokens.css`. No other file hardcodes a color or a font. To apply
-official brand guidelines, edit the BRAND PALETTE and TYPOGRAPHY blocks at the
-top of that file and the whole page follows.
+The page matches Courtney's Season of Lights flyer. Every color, font family
+and key spacing value is defined once, in `src/styles/tokens.css`. No other
+file hardcodes a color or a font.
+
+The flyer uses paid Adobe fonts, so the site uses free Google Fonts that
+match them closely. Astro downloads them at build time and serves them from
+this site (set up in `astro.config.mjs`):
+
+| Flyer font | Free match | Used for |
+| --- | --- | --- |
+| Scrapbooker Sans | Pompiere | Event names, times, headings |
+| Scrapbooker Sans Italic | Barlow Condensed Light Italic | Slanted lines like "Every Saturday" |
+| Cheap Pine Sans | Oswald | Small labels, locations, dates, buttons |
+| Scrapbooker Script | Dancing Script | Small script words like "to" and "and" |
+| Gotham | Montserrat | Running text and the footer |
+
+The "Season of lights" headline is not a font. It is Courtney's lettering, cut
+out of the flyer PDF as a picture with a see-through background
+(`public/images/season-of-lights.webp`).
 
 ## Sections that hide themselves
 
@@ -62,19 +80,45 @@ reading those times with plain JavaScript would shift them by several hours.
 what the person typing them into the CMS means. Event times are then displayed
 in `America/Los_Angeles` no matter where the visitor is.
 
+## Events
+
+Events on the same day are grouped under one cream date circle, like the
+flyer. A few optional fields in Pages CMS match how the flyer shows things:
+
+- **Cost**: shown after the location, for example "FREE" or "$10".
+- **Highlight**: a short perk in slanted type, for example "Free Santa hats".
+- **Custom time text**: replaces the start and end times, for example
+  "9AM or 12PM" for two seatings. The start and end times are still needed so
+  the event sorts and drops off the site at the right time.
+
+A lowercase "and" in an event name ("Cocoa Station and Photo Booth") is set
+in script on its own line. The words "to" and "or" in times are set in script.
+
 ## Window contest stages
 
-The "Window contest stage" dropdown in Pages CMS drives what visitors see:
+The "Window contest stage" dropdown in Pages CMS drives what visitors see.
+Nothing switches on its own.
 
 | Stage | What shows |
 | --- | --- |
-| Coming soon | "Voting opens Saturday, Nov 28" |
-| Voting open | The Google Form embedded in the page, plus the deadline |
-| Voting closed | "Voting is closed. Winners announced the week of January 4." |
-| Winners | Winners by category, with photos when provided |
+| Coming soon | Prizes, "Voting opens Saturday, November 28", the red business sign-up box, and the list of entered windows |
+| Voting open | Prizes, the deadline, an "Open the ballot" button, and a card for each business with a "Vote for this window" button |
+| Voting closed | "Winners will be announced the week of ..." from the CMS date |
+| Winners | 1st, 2nd and 3rd place with prizes, and photos when provided |
 
-Paste any Google Form link into the "Google Form link" field. The site adds the
-`embedded=true` parameter itself, so the plain share link works fine.
+Prize amounts ($150, $75, $50) are set in `src/lib/settings.ts`.
+
+### Vote buttons with the business already ticked
+
+Paste a Google Forms **pre-filled link** into "Voting form link (pre-filled)":
+in the form editor, open the ⋮ menu, choose **Get pre-filled link**, tick any
+one business, then **Get link**. The site swaps that business for each card's
+business, so every "Vote for this window" button opens the ballot with the
+right box already ticked (`buildVoteUrl` in `src/lib/format.ts`).
+
+Business names in Pages CMS must match the choices in the form exactly. If
+they don't, the ballot still opens, just with nothing ticked. A plain form
+link also works; the buttons then open the empty ballot.
 
 ## Turning on the newsletter signup
 

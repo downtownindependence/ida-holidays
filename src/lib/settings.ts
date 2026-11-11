@@ -10,6 +10,9 @@ export const CONTEST_STAGES = [
 
 export type ContestStage = (typeof CONTEST_STAGES)[number];
 
+/** Prize for each finishing place. Change here if the board changes them. */
+export const PRIZES = ['$150', '$75', '$50'] as const;
+
 const optionalText = z
   .string()
   .trim()
@@ -20,6 +23,7 @@ const businessSchema = z.object({
   name: z.string().trim().min(1),
   address: optionalText,
   link: optionalText,
+  photo: optionalText,
 });
 
 const santaSpotSchema = z.object({
@@ -30,7 +34,7 @@ const santaSpotSchema = z.object({
 });
 
 const winnerSchema = z.object({
-  category: z.string().trim().min(1),
+  place: z.coerce.number().int().min(1).max(3),
   business: z.string().trim().min(1),
   photo: optionalText,
 });
@@ -47,9 +51,12 @@ const volunteerCalloutSchema = z
 
 const settingsSchema = z.object({
   contestStage: z.enum(CONTEST_STAGES).default('coming-soon'),
+  businessSignupUrl: optionalText,
+  signupDeadline: optionalText,
+  votingOpens: optionalText,
   votingDeadline: optionalText,
+  winnersAnnounced: optionalText,
   votingFormUrl: optionalText,
-  contestCategories: z.array(z.string().trim().min(1)).default([]),
   participatingBusinesses: z.array(businessSchema).default([]),
   santaPhotoSpots: z.array(santaSpotSchema).default([]),
   winners: z.array(winnerSchema).default([]),

@@ -20,32 +20,40 @@ Read this file first in every session. It is the handoff from earlier work done 
 - Editing: Pages CMS (app.pagescms.org). Board members edit through email invites, no code. Config lives in .pages.yml.
 - Forms: Google Forms (NOT Tally; Tally was dropped). One form for business sign-up, one for voting. Links are pasted into Pages CMS fields.
 - Newsletter: EmailOctopus. Signup section stays hidden until the embed snippet is pasted in.
+- Pushing from Sydney's Mac: the Mac's main GitHub login is a different account (performxpt), which has no access to this repo. This repo has its own git credential setting that pushes as the IDA account (downtownindependence) through the GitHub CLI. If a push is refused, check `gh auth status` shows downtownindependence logged in.
+- Every push to main makes Cloudflare rebuild and publish the live site, even for notes-only changes.
 
 ## Current status (as of Nov 11, 2026)
 - Phases 1 and 2 are done. Site is live, build is clean, Pages CMS works end to end (a board member added the Nov 16 Community Meeting and Wreath Stringing Party through the CMS and it published).
 - Known fix already made: Pages CMS saves event times without a timezone and Cloudflare builds in UTC. Times are now handled as Pacific. Keep it that way and re-check times after any change to date handling.
-- Still empty or waiting: Google Form links, participating businesses, Santa photo spots, winners, newsletter embed. Volunteer callout is written but toggled off.
+- Still empty or waiting: Google Form links, participating businesses, Santa photo spots, winners, newsletter embed. Volunteer callout is toggled off and its fields are blank (nothing written yet).
+- Nov 11: the Season of Lights site update was built (new look, events from the flyer, one-category contest with vote buttons, business sign-up box). See README for how it works. Check git log to see whether it has been pushed live.
 
 ## Season of Lights decisions (newest, from Cindy Wilson, IDA president, Nov 7)
 These REPLACE the older four-category contest that is currently on the live page.
 - Program name: Season of Lights. Events every Saturday, Nov 28 to Dec 19, 2026.
 - Window Display Contest: ONE category, favorite window display.
 - Top 3 vote-getters win cash: $150, $75, $50, plus a special callout in the IDA newsletter (about 1,500 local readers).
-- Voting opens Nov 28. Closing date currently Dec 25, 2026 (Sydney may change it to Jan 1 after confirming with Cindy, so it must be a CMS field). Winners announced the week of Dec 28 (also a CMS field).
+- Voting opens Nov 28. Closing date was Dec 25, 2026, but the newest flyer says voting runs "November 28 through December 24", so the site's CMS field is set to Dec 24 until Sydney confirms (it may become Jan 1 after she checks with Cindy). Winners announced the week of Dec 28. All of these are CMS fields.
 - Voting: one ballot per email, voters may pick up to 3 favorite windows. Email is collected in the form but voters are NOT forced to sign in to Google. Optional newsletter opt-in checkbox on the ballot. Duplicates are removed by email at count time.
-- "The storefront list is the ballot": participating businesses show as cards on the page; during voting each card has a "Vote for this window" button that opens the Google Form with that business pre-selected.
+- "The storefront list is the ballot": participating businesses show as cards on the page; during voting each card has a "Vote for this window" button that opens the Google Form with that business pre-selected. Built: paste a Google Forms "pre-filled link" into the CMS voting link field and the site swaps in each business name. Business names in the CMS must match the form's choices exactly. The Google Form is no longer embedded in the page; buttons open it instead.
 - Businesses enter through a free Google Form sign-up. Sign-up deadline Nov 28. IDA volunteers walk downtown around Nov 18 with flyers to sign businesses up.
 
-## Events known so far
-- Mon Nov 16, 5:30 to 8 PM: Community Meeting and Wreath Stringing Party, Independence Landing Apartments (already live).
-- Sat Nov 28, 2 to 4 PM: Sip-n-Stroll, Independence Hotel.
-- Sat Dec 5, 2 to 4 PM: Santa Train, Elks Lodge.
-- Sat Dec 12 and Dec 19: still being finalized by Amy (IDA).
+## Events
+- Mon Nov 16, 5:30 to 8 PM: Community Meeting and Wreath Stringing Party, Independence Landing Apartments (added by a board member through the CMS).
+- The Saturday events on the site come from Courtney's newest flyer PDF ("Holiday Flyer (IN PROGRESS: Old Text)", Nov 11). Its file name says the text may be old, so treat these as needing confirmation. They replace the older list (Sip-n-Stroll Nov 28 2 to 4 PM; Santa Train Dec 5 2 to 4 PM at Elks Lodge), which the flyer no longer shows:
+  - Sat Nov 28: Letters to Santa & Hot Cocoa, Independence Hotel, free, 4 to 6 PM.
+  - Sat Dec 5: Holiday Bazaar, Elks Club, free, 9 AM to 4 PM. Cocoa Station, Riverfront Park, free, 11 AM to 3 PM. Santa Train, Downtown C Street, free, 12 to 3 PM.
+  - Sat Dec 12: Cocoa Station and Photo Booth (free Santa hats), Riverfront Park, free, 11 AM to 3 PM. Meet Santa!, Independence Hotel, free, 4 to 6 PM.
+  - Sat Dec 19: Breakfast and Buddy the Elf, Independence Hotel, $10, 9 AM or 12 PM (ticket link still a placeholder on the flyer; end time set to 2 PM as a guess). Cocoa Station and Photo Booth (free candy canes), Riverfront Park, free, 11 AM to 3 PM.
+- Event descriptions were written from the flyer and are deliberately plain. Category and crowd size for these are guesses (all IDA, crowd medium, Santa Train large); neither shows on the site.
 
-## Branding (match Courtney's flyer)
+## Branding (matches Courtney's flyer; decided Nov 11)
 - Deep green background #013230, gold #e0922a, red-orange #d9533a, cream #f5efe0.
-- Flowing script for the main headline (e.g., Yellowtail); tall condensed all-caps for dates, labels, and event titles (e.g., Oswald).
-- Saturday dates shown in cream circles with a sunburst (month small on top, day large).
+- The flyer uses paid fonts (Scrapbooker Script, Scrapbooker Sans and Sans Italic, Cheap Pine Sans, Gotham). The site uses free Google Fonts that Sydney approved: Pompiere (event names, headings), Barlow Condensed Light Italic (slanted lines), Oswald (small labels), Dancing Script (small script words like "to"), Montserrat (body, footer). Set up in astro.config.mjs; Astro self-hosts them.
+- The "Season of lights" headline is NOT a font. It is Courtney's lettering cut out of the flyer PDF as a see-through picture (public/images/season-of-lights.webp). Sydney rejected free script fonts for it (Dancing Script was the closest; bouncy alternatives looked childish). Sydney is checking with Courtney that using the lettering is OK; assume yes unless told otherwise.
+- Dates shown in cream circles with a sunburst (month small on top, day large), one per day, events stacked underneath with gold sparkles between them.
+- Footer matches the flyer: "Brought to you by the City of Independence & Independence Downtown Association".
 - Mobile-first and lightweight; most visitors arrive by QR code on a phone.
 
 ## Deadlines

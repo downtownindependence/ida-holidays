@@ -3,56 +3,54 @@
  *
  * Every color, font, radius and key spacing value on the site lives here.
  * Nothing else in the project should hardcode a color or a font family.
- * When official IDA brand guidelines arrive, edit the BRAND PALETTE and
- * TYPOGRAPHY blocks below and the whole page restyles.
+ * Colors and fonts match Courtney's Season of Lights flyer. To restyle, edit
+ * the BRAND PALETTE and TYPOGRAPHY blocks below and the whole page follows.
  */
 
 :root {
   /* ---------------------------------------------------------------
    * BRAND PALETTE
-   * Raw brand colors. Replace these when brand guidelines arrive.
+   * Straight from the Season of Lights flyer.
    * --------------------------------------------------------------- */
-  --brand-evergreen: #123024;
-  --brand-evergreen-deep: #0b2018;
-  --brand-evergreen-light: #1b4433;
-  --brand-cranberry: #9e2b2b;
-  --brand-cranberry-light: #c24141;
-  --brand-gold: #d6a85a;
-  --brand-gold-light: #e8c488;
-  --brand-cream: #f7f1e3;
+  --brand-green: #013230;
+  --brand-green-deep: #00221f;
+  --brand-green-light: #0a4542;
+  --brand-gold: #e0922a;
+  --brand-gold-light: #efad52;
+  --brand-red: #d9533a;
+  --brand-red-light: #e8735d;
+  --brand-cream: #f5efe0;
   --brand-white: #ffffff;
 
   /* The color of the browser chrome on a phone. This one has to be a literal
    * hex value rather than a var(), because it is read out of this file at
    * build time and written into a <meta name="theme-color"> tag. Keep it
-   * matching --brand-evergreen-deep. */
-  --meta-theme-color: #0b2018;
+   * matching --brand-green. */
+  --meta-theme-color: #013230;
 
-  /* Cream at reduced opacity, used for secondary text and hairlines.
-   * Keep these in sync with --brand-cream if the cream value changes. */
-  --brand-cream-82: rgba(247, 241, 227, 0.82);
-  --brand-cream-64: rgba(247, 241, 227, 0.64);
-  --brand-cream-16: rgba(247, 241, 227, 0.16);
-  --brand-cream-08: rgba(247, 241, 227, 0.08);
-  --brand-cream-04: rgba(247, 241, 227, 0.04);
-  --brand-gold-60: rgba(214, 168, 90, 0.6);
-  --brand-gold-20: rgba(214, 168, 90, 0.2);
-  --brand-cranberry-22: rgba(158, 43, 43, 0.22);
-  --brand-shadow: rgba(4, 14, 10, 0.35);
+  /* Cream and gold at reduced opacity, used for secondary text and
+   * hairlines. Keep these in sync if the cream or gold values change. */
+  --brand-cream-82: rgba(245, 239, 224, 0.82);
+  --brand-cream-64: rgba(245, 239, 224, 0.64);
+  --brand-cream-24: rgba(245, 239, 224, 0.24);
+  --brand-cream-16: rgba(245, 239, 224, 0.16);
+  --brand-cream-08: rgba(245, 239, 224, 0.08);
+  --brand-cream-04: rgba(245, 239, 224, 0.04);
+  --brand-gold-60: rgba(224, 146, 42, 0.6);
+  --brand-gold-24: rgba(224, 146, 42, 0.24);
+  --brand-shadow: rgba(0, 18, 16, 0.4);
 
   /* ---------------------------------------------------------------
    * SEMANTIC COLORS
    * What the page actually references. Point these at brand values.
    * --------------------------------------------------------------- */
-  --color-bg: var(--brand-evergreen-deep);
-  --color-bg-gradient-top: var(--brand-evergreen);
-  --color-bg-glow-warm: var(--brand-cream-16);
-  --color-bg-glow-accent: var(--brand-cranberry-22);
+  --color-bg: var(--brand-green);
+  --color-bg-deep: var(--brand-green-deep);
 
   --color-surface: var(--brand-cream-08);
   --color-surface-strong: var(--brand-cream-04);
   --color-surface-border: var(--brand-cream-16);
-  --color-surface-border-strong: var(--brand-gold-20);
+  --color-surface-border-strong: var(--brand-gold-24);
 
   --color-heading: var(--brand-cream);
   --color-text: var(--brand-cream-82);
@@ -61,30 +59,44 @@
 
   --color-accent: var(--brand-gold);
   --color-accent-hover: var(--brand-gold-light);
-  --color-accent-contrast: var(--brand-evergreen-deep);
-  --color-accent-secondary: var(--brand-cranberry);
-  --color-accent-secondary-hover: var(--brand-cranberry-light);
+  --color-accent-contrast: var(--brand-green-deep);
+  --color-accent-secondary: var(--brand-red);
+  --color-accent-secondary-hover: var(--brand-red-light);
+  --color-accent-secondary-contrast: var(--brand-cream);
+
+  /* The cream date circles and their sunburst rays. */
+  --color-sun: var(--brand-cream);
+  --color-sun-text: var(--brand-red);
+  /* The small gold sparkle between events on the same day. */
+  --color-sparkle: var(--brand-gold);
 
   --color-link: var(--brand-gold);
   --color-link-hover: var(--brand-gold-light);
   --color-link-underline: var(--brand-gold-60);
   --color-focus: var(--brand-gold);
 
-  --color-badge-bg: var(--brand-cream-08);
-  --color-badge-text: var(--brand-cream-82);
-  --color-badge-border: var(--brand-cream-16);
-
   --color-rule: var(--brand-cream-16);
+  --color-rule-strong: var(--brand-cream-24);
   --color-shadow: var(--brand-shadow);
 
   /* ---------------------------------------------------------------
    * TYPOGRAPHY
+   * Free fonts that match the flyer's paid ones. They are set up in
+   * astro.config.mjs, which defines the --font-pompiere style variables.
    * --------------------------------------------------------------- */
-  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
-    'Times New Roman', serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+  /* Event names and headings (flyer: Scrapbooker Sans). */
+  --font-display: var(--font-pompiere), 'Arial Narrow', sans-serif;
+  /* Slanted lines like "Every Saturday" (flyer: Scrapbooker Sans Italic). */
+  --font-slanted: var(--font-barlow-condensed), 'Arial Narrow', sans-serif;
+  /* Small all-caps labels, locations, dates (flyer: Cheap Pine Sans). */
+  --font-label: var(--font-oswald), 'Arial Narrow', sans-serif;
+  /* Small script words like "to" and "and" (flyer: Scrapbooker Script). */
+  --font-script: var(--font-dancing-script), cursive;
+  /* Running text and the footer (flyer: Gotham). */
+  --font-body: var(--font-montserrat), -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
+  --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
@@ -93,17 +105,18 @@
   /* Fluid sizes. The small end is the phone, the large end is desktop. */
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
-  --text-base: clamp(1.0625rem, 0.98rem + 0.42vw, 1.1875rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
   --text-lg: clamp(1.1875rem, 1.08rem + 0.55vw, 1.375rem);
-  --text-xl: clamp(1.375rem, 1.22rem + 0.78vw, 1.625rem);
-  --text-2xl: clamp(1.625rem, 1.38rem + 1.2vw, 2.125rem);
-  --text-3xl: clamp(2.125rem, 1.6rem + 2.6vw, 3.25rem);
+  --text-xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+  --text-2xl: clamp(2rem, 1.7rem + 1.5vw, 2.625rem);
+  --text-3xl: clamp(2.5rem, 2rem + 2.6vw, 3.5rem);
 
-  --leading-tight: 1.12;
+  --leading-tight: 1.08;
   --leading-snug: 1.3;
   --leading-normal: 1.6;
-  --tracking-wide: 0.13em;
-  --tracking-tight: -0.01em;
+  --tracking-wide: 0.1em;
+  --tracking-label: 0.06em;
+  --tracking-tight: 0.01em;
 
   /* ---------------------------------------------------------------
    * SPACING, SIZING, SHAPE
@@ -123,7 +136,8 @@
   --section-gap: clamp(3rem, 2.2rem + 4vw, 5rem);
   --page-gutter: clamp(1.25rem, 0.9rem + 1.8vw, 2rem);
   --content-max: 46rem;
-  --hero-max: 34rem;
+  --wide-max: 68rem;
+  --hero-max: 40rem;
 
   /* Minimum size for anything tappable. Keep at 44px or more. */
   --tap-target-min: 2.75rem;

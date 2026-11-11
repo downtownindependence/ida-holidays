@@ -1,7 +1,8 @@
 <footer class="footer">
   <p>
-    Presented by the <a href="https://downtownindependence.com"
-      >Independence Downtown Association</a
+    Brought to you by the <strong>City of Independence</strong> &amp;{' '}
+    <a href="https://downtownindependence.com"
+      ><strong>Independence Downtown Association</strong></a
     >
   </p>
 </footer>
@@ -15,9 +16,27 @@
     text-align: center;
   }
 
+  /* Matches the flyer's footer line: small, spaced-out capitals. */
   .footer p {
-    margin: 0;
-    font-size: var(--text-sm);
+    max-width: 40rem;
+    margin: 0 auto;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     color: var(--color-text-muted);
+  }
+
+  .footer strong {
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+  }
+
+  .footer a {
+    text-decoration-color: var(--color-link-underline);
+  }
+
+  .footer a strong {
+    color: inherit;
   }
 </style>

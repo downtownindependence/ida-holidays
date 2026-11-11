@@ -1,49 +1,103 @@
 ---
-import type { EventEntry } from '../lib/events';
-import { formatEventDate, formatEventTimeRange, toIsoString } from '../lib/format';
+/*
+ * Events laid out like the flyer: one column per day, each with a cream sun
+ * circle for the date and that day's events underneath, separated by small
+ * gold sparkles. One column on a phone, side by side on a wider screen.
+ */
+import type { EventDay } from '../lib/events';
+import { clockParts, splitLinkingWords } from '../lib/format';
+import SunDate from './SunDate.astro';
+import Sparkle from './Sparkle.astro';
 
 interface Props {
-  events: EventEntry[];
+  days: EventDay[];
 }
 
-const { events } = Astro.props;
+const { days } = Astro.props;
+// Side by side on a wide screen: up to five days fit in one row (the flyer
+// has four Saturdays, plus the November meeting until it passes). With more
+// than five, rows of four.
+const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
 ---
 
 {
-  events.length === 0 ? (
+  days.length === 0 ? (
     <p class="empty">
       Event details coming soon. Check back shortly, or follow the Independence
       Downtown Association for updates.
     </p>
   ) : (
-    <ol class="events">
-      {events.map((entry) => (
-        <li class="event">
-          <p class="event__date">
-            <time datetime={toIsoString(entry.data.start)}>
-              {formatEventDate(entry.data.start)}
-            </time>
-          </p>
-          <h3 class="event__name">{entry.data.name}</h3>
-          <p class="event__meta">
-            <span>{formatEventTimeRange(entry.data.start, entry.data.end)}</span>
-            <span class="event__dot" aria-hidden="true">
-              •
-            </span>
-            <span>{entry.data.location}</span>
-          </p>
-          <p class="event__description">{entry.data.description}</p>
-          {entry.data.link && (
-            <p class="event__action">
-              <a
-                class="button"
-                href={entry.data.link}
-                aria-label={`More details about ${entry.data.name}`}
-              >
-                More details
-              </a>
-            </p>
-          )}
+    <ol class="days" style={`--wide-columns: ${wideColumns}`} data-columns={wideColumns}>
+      {days.map((day) => (
+        <li class="day">
+          <SunDate date={day.date} />
+          <ol class="day__events">
+            {day.events.map((entry, index) => {
+              const { name, location, cost, highlight, timeText, description, link } =
+                entry.data;
+              const start = clockParts(entry.data.start);
+              const end = clockParts(entry.data.end);
+              return (
+                <li class="event">
+                  {index > 0 && <Sparkle />}
+                  <h3 class="event__name">
+                    {splitLinkingWords(name, ['and']).map((piece) =>
+                      piece.script ? (
+                        <span class="event__and">{piece.text.trim()}</span>
+                      ) : (
+                        <span>{piece.text}</span>
+                      ),
+                    )}
+                  </h3>
+                  {highlight && <p class="event__highlight">{highlight}</p>}
+                  <p class="event__place">
+                    {location}
+                    {cost && (
+                      <>
+                        {' '}
+                        <span class="event__cost">
+                          <span aria-hidden="true">• </span>
+                          <span class="visually-hidden">, </span>
+                          {cost}
+                        </span>
+                      </>
+                    )}
+                  </p>
+                  <p class="event__time">
+                    {timeText ? (
+                      splitLinkingWords(timeText).map((piece) =>
+                        piece.script ? (
+                          <span class="event__to">{piece.text}</span>
+                        ) : (
+                          <span>{piece.text}</span>
+                        ),
+                      )
+                    ) : (
+                      <>
+                        {start.time}
+                        <span class="event__mer">{start.meridiem}</span>
+                        <span class="event__to"> to </span>
+                        {end.time}
+                        <span class="event__mer">{end.meridiem}</span>
+                      </>
+                    )}
+                  </p>
+                  {description && <p class="event__description">{description}</p>}
+                  {link && (
+                    <p class="event__action">
+                      <a
+                        class="button"
+                        href={link}
+                        aria-label={`More details about ${name}`}
+                      >
+                        More details
+                      </a>
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
         </li>
       ))}
     </ol>
@@ -61,90 +115,151 @@ const { events } = Astro.props;
     color: var(--color-text);
   }
 
-  .events {
+  .days {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-12) 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .day {
+    display: grid;
+    align-content: start;
     gap: var(--space-5);
+    padding-inline: var(--space-4);
+    text-align: center;
+  }
+
+  /* Two columns on a tablet, then everything in one row on a wide screen.
+   * Thin dividers sit between side-by-side days, like the flyer's columns,
+   * but never on the first day of a row. */
+  @media (min-width: 40rem) {
+    .days {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .day:nth-child(2n) {
+      border-left: var(--border-hairline) solid var(--color-rule-strong);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .days {
+      grid-template-columns: repeat(var(--wide-columns), minmax(0, 1fr));
+    }
+
+    .day:nth-child(2n) {
+      border-left: 0;
+    }
+
+    .day + .day {
+      border-left: var(--border-hairline) solid var(--color-rule-strong);
+    }
+
+    .days[data-columns='4'] .day:nth-child(4n + 1) {
+      border-left: 0;
+    }
+  }
+
+  .day__events {
+    display: grid;
+    gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .event {
-    padding: var(--space-6);
-    border: var(--border-hairline) solid var(--color-surface-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-card);
+    display: grid;
+    gap: var(--space-2);
   }
 
-  .event__date {
-    margin: 0 0 var(--space-2);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-eyebrow);
+  .event > :global(.sparkle) {
+    margin-bottom: var(--space-3);
   }
 
   .event__name {
     margin: 0;
     font-size: var(--text-xl);
+    text-transform: uppercase;
   }
 
-  /* Stacked on a phone, where a time and a street address rarely fit on one
-   * line together. Side by side with a separator once there is room. */
-  .event__meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    margin: var(--space-2) 0 0;
+  .event__and {
+    display: block;
+    font-family: var(--font-script);
+    font-weight: var(--weight-medium);
+    font-size: 0.8em;
+    text-transform: none;
+    line-height: 1;
+  }
+
+  .event__highlight {
+    margin: 0;
+    font-family: var(--font-slanted);
+    font-style: italic;
+    font-weight: var(--weight-light);
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  .event__place {
+    margin: 0;
+    font-family: var(--font-label);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-heading);
   }
 
-  .event__dot {
-    display: none;
-    color: var(--color-accent);
+  /* Keep "• FREE" together so the dot never starts a line on its own. */
+  .event__cost {
+    white-space: nowrap;
   }
 
-  @media (min-width: 30rem) {
-    .event__meta {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: var(--space-2);
-    }
+  .event__time {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
 
-    .event__dot {
-      display: inline;
-    }
+  .event__mer {
+    font-size: 0.72em;
+  }
+
+  .event__to {
+    font-family: var(--font-script);
+    font-weight: var(--weight-medium);
+    font-size: 0.8em;
+    text-transform: none;
   }
 
   .event__description {
-    margin: var(--space-4) 0 0;
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
     /* Editors write multi paragraph descriptions in Pages CMS. Keep the line
      * breaks they typed instead of running it all together. */
     white-space: pre-line;
   }
 
   .event__action {
-    margin: var(--space-5) 0 0;
+    margin: var(--space-2) 0 0;
   }
 
-  .button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: var(--tap-target-min);
-    padding: var(--space-3) var(--space-6);
-    border-radius: var(--radius-pill);
-    background: var(--color-accent);
-    color: var(--color-accent-contrast);
-    font-weight: var(--weight-semibold);
-    text-decoration: none;
-  }
-
-  .button:hover {
-    background: var(--color-accent-hover);
-    color: var(--color-accent-contrast);
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 </style>

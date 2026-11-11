@@ -8,47 +8,42 @@ import WindowContest from '../components/WindowContest.astro';
 import VolunteerCallout from '../components/VolunteerCallout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { getVisibleEvents } from '../lib/events';
+import { getVisibleEvents, groupEventsByDay } from '../lib/events';
 import { settings, isVolunteerCalloutVisible } from '../lib/settings';
 
-const title = 'Downtown Independence Holidays 2026';
-const dateline = 'Every Saturday, Nov 28 to Dec 19';
+const title = 'Season of Lights | Downtown Independence';
 const description =
-  'Holiday events every Saturday from Nov 28 to Dec 19 in downtown Independence, plus Santa photo spots and the Storefront Window Display Contest.';
+  'Holiday events every Saturday from Nov 28 to Dec 19 in downtown Independence, Oregon, plus the Holiday Window Display Contest. Vote for your favorite window!';
 
-const events = await getVisibleEvents();
+const eventDays = groupEventsByDay(await getVisibleEvents());
 const santaSpots = settings.santaPhotoSpots;
 const showVolunteerCallout = isVolunteerCalloutVisible(settings.volunteerCallout);
 ---
 
 <BaseLayout title={title} description={description}>
-  <Hero title={title} dateline={dateline} />
+  <Hero datelineTop="Every Saturday" datelineFrom="Nov 28" datelineTo="Dec 19" />
 
   <main id="main">
-    <Section id="events" eyebrow="Mark your calendar" title="Upcoming events">
-      <EventList events={events} />
+    <Section id="events" eyebrow="Mark your calendar" title="Upcoming events" wide>
+      <EventList days={eventDays} />
     </Section>
-
-    {
-      santaSpots.length > 0 && (
-        <Section
-          id="santa"
-          eyebrow="Bring the kids"
-          title="Santa photo spots"
-          tone="panel"
-        >
-          <SantaSpots spots={santaSpots} />
-        </Section>
-      )
-    }
 
     <Section
       id="window-contest"
       eyebrow="Vote for your favorite"
-      title="Storefront Window Display Contest"
+      title="Holiday Window Display Contest"
+      tone="panel"
     >
       <WindowContest settings={settings} />
     </Section>
+
+    {
+      santaSpots.length > 0 && (
+        <Section id="santa" eyebrow="Bring the kids" title="Santa photo spots">
+          <SantaSpots spots={santaSpots} />
+        </Section>
+      )
+    }
 
     {
       showVolunteerCallout && settings.volunteerCallout && (

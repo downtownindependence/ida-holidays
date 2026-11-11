@@ -1,13 +1,11 @@
 {
   "contestStage": "coming-soon",
-  "votingDeadline": "2027-01-01",
+  "businessSignupUrl": "",
+  "signupDeadline": "2026-11-28",
+  "votingOpens": "2026-11-28",
+  "votingDeadline": "2026-12-24",
+  "winnersAnnounced": "2026-12-28",
   "votingFormUrl": "",
-  "contestCategories": [
-    "People's Choice",
-    "Best Use of Merchandise Display",
-    "Best Use of Light",
-    "Category 4 (name coming soon)"
-  ],
   "participatingBusinesses": [],
   "santaPhotoSpots": [],
   "winners": [],

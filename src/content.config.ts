@@ -20,6 +20,14 @@ const events = defineCollection({
     businessTips: z.string().optional(),
     description: z.string(),
     visible: z.boolean().default(true),
+    // Optional extras, shown the way the flyer shows them. Blank means hidden.
+    // "FREE" or "$10", shown after the location.
+    cost: z.string().optional(),
+    // A short perk shown in slanted type, like "Free Santa hats".
+    highlight: z.string().optional(),
+    // Replaces the start and end times on the page when they don't tell the
+    // whole story, like "9AM or 12PM" for two seatings.
+    timeText: z.string().optional(),
   }),
 });
 
