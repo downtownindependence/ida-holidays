@@ -55,6 +55,13 @@ const content = {
     <p class="banner__action">
       <a class="button banner__button" href={content.href}>{content.button}</a>
     </p>
+    {
+      contestStage === 'coming-soon' && (
+        <p class="banner__business">
+          Downtown business? <a href="#signup">Enter your window, free</a>
+        </p>
+      )
+    }
   </div>
 </aside>
 
@@ -98,6 +105,17 @@ const content = {
 
   .banner__action {
     margin: var(--space-2) 0 0;
+  }
+
+  .banner__business {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .banner__business a {
+    color: inherit;
+    font-weight: var(--weight-semibold);
+    text-decoration-color: currentColor;
   }
 
   /* Cream on red, so it stands out from the red box. */

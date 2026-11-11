@@ -124,12 +124,38 @@ Nothing switches on its own.
 
 | Stage | What shows |
 | --- | --- |
-| Coming soon | Prizes, "Voting opens Saturday, November 28", the red business sign-up box, and the list of entered windows |
-| Voting open | Prizes, the deadline, and the ballot: a card for each business with a "Pick this window" button, then email and submit |
+| Coming soon | "Voting opens Saturday, November 28", the red business box (prize amounts and the sign-up form), and the list of entered windows |
+| Voting open | The deadline and the ballot: a card for each business with a "Pick this window" button, then email and submit |
 | Voting closed | "Winners will be announced the week of ..." from the CMS date |
 | Winners | 1st, 2nd and 3rd place with prizes, and photos when provided |
 
 Prize amounts ($150, $75, $50) are set in `src/lib/settings.ts`.
+
+### Forms built into the page
+
+Both the ballot and the business sign-up look like the rest of the site and
+never send people to a Google page. Each one quietly sends its answers to its
+own Google Form, so responses land in that form's Google Sheet
+(`src/lib/forms.ts`). The same rules apply to both Google Forms: every
+question is **short answer**, none required, no response validation, no
+Google sign-in, no one-response limit, and email collection turned off. The
+site learns which question is which from a pre-filled link made with
+placeholder answers, pasted into Pages CMS.
+
+### Business sign-up
+
+Shown inside the red business box while the stage is Coming soon, along with
+the prize amounts (kept out of the shoppers' part of the page so it doesn't
+read like voters win cash). Fields: business name, contact name, email,
+phone, address, website, notes. Phone, website and notes are optional and are
+left off the page if the Google Form doesn't have them.
+
+Placeholders for the pre-filled link: `BUSINESS`, `CONTACT`,
+`owner@example.com`, `PHONE`, `ADDRESS`, `WEBSITE`, `NOTES`
+(`src/lib/signup.ts`, `src/components/SignupForm.astro`).
+
+Sign-ups do not appear on the page by themselves. Someone at IDA adds each
+business to "Participating businesses" in Pages CMS from the sheet.
 
 ### The ballot on the page
 
@@ -139,6 +165,7 @@ box), and tap "Submit my vote". A floating "Finish voting" bar helps on phones.
 After voting they see a thank-you with their picks, and a "Vote with another
 email" button for people sharing a phone.
 
+Voters never type business names; the page fills in the names from Pages CMS.
 Behind the scenes the page sends each vote to a Google Form, so votes land in
 that form's Google Sheet like any other response (`src/components/Ballot.astro`
 and `src/lib/ballot.ts`). Google doesn't let the page see whether it accepted

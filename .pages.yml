@@ -23,13 +23,13 @@ content:
             - { value: winners, label: 'Winners' }
 
       - name: businessSignupUrl
-        label: Business sign-up form link
+        label: Business sign-up form link (pre-filled)
         type: string
         required: false
         pattern:
           regex: '^$|^https?://.+'
           message: 'Leave blank, or paste a full web address starting with https://'
-        description: The Google Form businesses use to enter the contest. Shown as a button while the stage is Coming soon.
+        description: 'Powers the sign-up form in the red business box (shown while the stage is Coming soon). In the sign-up Google Form, open the ⋮ menu, choose "Get pre-filled link", and type these exact answers: BUSINESS, CONTACT, owner@example.com for email, PHONE, ADDRESS, WEBSITE, NOTES. Click "Get link", copy it, and paste it here. If the link is wrong, the box shows a button that opens the Google Form instead.'
 
       - name: signupDeadline
         label: Business sign-up deadline

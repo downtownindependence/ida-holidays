@@ -3,8 +3,9 @@
  * The Holiday Window Display Contest. What shows depends on the "Window
  * contest stage" dropdown in Pages CMS; nothing switches automatically.
  *
- *   Coming soon    Prizes, business sign-up box, list of entered windows
- *   Voting open    Business cards, each with a "Vote for this window" button
+ *   Coming soon    When voting opens, the business sign-up box (with the
+ *                  prize amounts and sign-up form), list of entered windows
+ *   Voting open    The ballot: business cards to pick, then email and submit
  *   Voting closed  When winners will be announced
  *   Winners        The top three, with photos when provided
  */
@@ -12,7 +13,9 @@ import type { HolidaySettings } from '../lib/settings';
 import { PRIZES } from '../lib/settings';
 import { buildVoteUrl, formatPlainDate, toBallotUrl } from '../lib/format';
 import { parseBallotConfig } from '../lib/ballot';
+import { parseSignupConfig } from '../lib/signup';
 import Ballot from './Ballot.astro';
+import SignupForm from './SignupForm.astro';
 
 interface Props {
   settings: HolidaySettings;
@@ -45,6 +48,9 @@ const isVoting = contestStage === 'voting-open';
 // the Google Form.
 const ballotConfig = parseBallotConfig(votingFormUrl);
 const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesses.length > 0;
+// Same idea for the business sign-up: built into the page when the CMS link
+// is a correctly made pre-filled link, otherwise a button to the Google Form.
+const signupConfig = parseSignupConfig(businessSignupUrl);
 ---
 
 <div class="contest">
@@ -54,20 +60,10 @@ const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesse
     vote for up to three.
   </p>
 
-  <div class="prizes" aria-label="Prizes">
-    {
-      PRIZES.map((prize, index) => (
-        <p class="prize">
-          <span class="prize__amount">{prize}</span>
-          <span class="prize__place">{placeNames[index]}</span>
-        </p>
-      ))
-    }
-    <p class="prizes__note">
-      The top three windows also get a special shout-out in the IDA newsletter,
-      read by about 1,500 locals.
-    </p>
-  </div>
+  <p class="contest__prizes">
+    The three windows with the most votes win cash prizes for the business and
+    a shout-out in the IDA newsletter.
+  </p>
 
   {
     contestStage === 'coming-soon' && (
@@ -84,12 +80,24 @@ const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesse
 
   {
     contestStage === 'coming-soon' && (
-      <div class="signup">
+      <div class="signup" id="signup">
         <p class="signup__eyebrow">For downtown businesses</p>
         <h3 class="signup__title">Enter your window, free</h3>
         <p class="signup__text">
           Decorate your storefront window for the season and sign up to be on
-          the ballot.
+          the ballot. The top three windows win:
+        </p>
+        <ul class="prizes" aria-label="Prizes">
+          {PRIZES.map((prize, index) => (
+            <li class="prize">
+              <span class="prize__amount">{prize}</span>
+              <span class="prize__place">{placeNames[index]}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="signup__text">
+          Plus a special shout-out in the IDA newsletter, read by about 1,500
+          locals.
           {signupText && (
             <>
               {' '}
@@ -97,7 +105,9 @@ const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesse
             </>
           )}
         </p>
-        {businessSignupUrl ? (
+        {signupConfig ? (
+          <SignupForm config={signupConfig} opensText={opensText} />
+        ) : businessSignupUrl ? (
           <p class="signup__action">
             <a class="button button--red" href={businessSignupUrl}>
               Sign up your business
@@ -262,21 +272,32 @@ const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesse
     text-align: center;
   }
 
+  .contest__prizes {
+    margin: 0;
+    font-size: var(--text-sm);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  /* Prize tiles inside the red business box. */
   .prizes {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-4);
-    margin: 0;
+    gap: var(--space-3);
+    max-width: 26rem;
+    margin: var(--space-4) auto;
+    padding: 0;
+    list-style: none;
   }
 
   .prize {
     display: grid;
     justify-items: center;
     gap: var(--space-1);
-    margin: 0;
-    padding: var(--space-4) var(--space-2);
+    padding: var(--space-3) var(--space-2);
     border-radius: var(--radius-md);
-    background: var(--color-surface);
+    background: var(--color-sun);
+    color: var(--color-accent-secondary);
     text-align: center;
   }
 
@@ -284,7 +305,6 @@ const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesse
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     line-height: 1;
-    color: var(--color-accent);
   }
 
   .prize__place {
@@ -293,15 +313,6 @@ const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesse
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color: var(--color-heading);
-  }
-
-  .prizes__note {
-    grid-column: 1 / -1;
-    margin: 0;
-    font-size: var(--text-sm);
-    text-align: center;
-    color: var(--color-text-muted);
   }
 
   .stage {

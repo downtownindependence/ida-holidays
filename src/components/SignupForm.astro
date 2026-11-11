@@ -1,0 +1,335 @@
+---
+/*
+ * The business sign-up form, built into the page so businesses never leave
+ * the site. Answers are sent to the sign-up Google Form behind the scenes
+ * (see src/lib/forms.ts and src/lib/signup.ts), so each sign-up lands in that
+ * form's Google Sheet. IDA then adds the business to "Participating
+ * businesses" in Pages CMS so it shows up on the ballot.
+ */
+import type { SignupConfig, SignupField } from '../lib/signup';
+
+interface Props {
+  config: SignupConfig;
+  /** "Saturday, November 28", when voting opens. */
+  opensText: string | null;
+}
+
+const { config, opensText } = Astro.props;
+
+interface FieldSpec {
+  name: SignupField;
+  label: string;
+  type: 'text' | 'email' | 'tel' | 'url' | 'textarea';
+  required: boolean;
+  autocomplete?: string;
+  help?: string;
+}
+
+const specs: FieldSpec[] = [
+  {
+    name: 'business',
+    label: 'Business name',
+    type: 'text',
+    required: true,
+    autocomplete: 'organization',
+    help: 'As you want it to appear on the ballot.',
+  },
+  { name: 'contact', label: 'Your name', type: 'text', required: true, autocomplete: 'name' },
+  { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' },
+  { name: 'phone', label: 'Phone', type: 'tel', required: false, autocomplete: 'tel' },
+  {
+    name: 'address',
+    label: 'Business address',
+    type: 'text',
+    required: true,
+    autocomplete: 'street-address',
+    help: 'For example "180 S Main St".',
+  },
+  {
+    name: 'website',
+    label: 'Website or Facebook page',
+    type: 'url',
+    required: false,
+    autocomplete: 'url',
+  },
+  { name: 'notes', label: 'Anything we should know?', type: 'textarea', required: false },
+];
+
+// Optional questions that aren't in the Google Form are left off the page.
+const fields = specs.filter((spec) => config.fields[spec.name]);
+const fieldIds = Object.fromEntries(fields.map((spec) => [spec.name, config.fields[spec.name]]));
+---
+
+<div
+  class="signup-form"
+  data-signup
+  data-action={config.action}
+  data-form-url={config.formUrl}
+  data-fields={JSON.stringify(fieldIds)}
+>
+  <form data-form novalidate>
+    {
+      fields.map((spec) => (
+        <div class="field">
+          <label for={`signup-${spec.name}`}>
+            {spec.label}
+            {!spec.required && <span class="field__optional"> (optional)</span>}
+          </label>
+          {spec.type === 'textarea' ? (
+            <textarea id={`signup-${spec.name}`} name={spec.name} rows="3" data-field={spec.name} />
+          ) : (
+            <input
+              id={`signup-${spec.name}`}
+              name={spec.name}
+              type={spec.type}
+              autocomplete={spec.autocomplete}
+              inputmode={spec.type === 'email' ? 'email' : spec.type === 'tel' ? 'tel' : undefined}
+              required={spec.required}
+              data-field={spec.name}
+              data-required={spec.required ? '' : undefined}
+              data-label={spec.label}
+            />
+          )}
+          {spec.help && <p class="field__help">{spec.help}</p>}
+        </div>
+      ))
+    }
+
+    <p class="status" data-status role="status" aria-live="polite"></p>
+
+    <p class="action">
+      <button type="submit" class="button signup-form__submit" data-submit>
+        Sign up my window
+      </button>
+    </p>
+  </form>
+
+  <div class="thanks" data-thanks hidden tabindex="-1">
+    <p class="thanks__title">You're signed up!</p>
+    <p class="thanks__text">
+      Thanks, <strong data-thanks-name></strong>. IDA will add your window to the ballot
+      {opensText ? ` before voting opens ${opensText}` : ' before voting opens'}. Time to get
+      decorating!
+    </p>
+    <p class="action">
+      <button type="button" class="button signup-form__submit" data-again>
+        Sign up another business
+      </button>
+    </p>
+  </div>
+
+  <noscript>
+    <p>
+      This form needs JavaScript. You can <a href={config.formUrl}>sign up on the Google Form</a>
+      instead.
+    </p>
+  </noscript>
+</div>
+
+<script>
+  function setUpSignup(root: HTMLElement) {
+    const action = root.dataset.action ?? '';
+    const formUrl = root.dataset.formUrl ?? '';
+    const fieldIds: Record<string, string> = JSON.parse(root.dataset.fields ?? '{}');
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const status = root.querySelector<HTMLElement>('[data-status]')!;
+    const submit = root.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const thanks = root.querySelector<HTMLElement>('[data-thanks]')!;
+    const thanksName = root.querySelector<HTMLElement>('[data-thanks-name]')!;
+    const again = root.querySelector<HTMLButtonElement>('[data-again]')!;
+    const inputs = [
+      ...root.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-field]'),
+    ];
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.textContent = '';
+      for (const input of inputs) input.removeAttribute('aria-invalid');
+
+      const missing = inputs.find(
+        (input) => input.hasAttribute('data-required') && !input.value.trim(),
+      );
+      if (missing) {
+        missing.setAttribute('aria-invalid', 'true');
+        status.textContent = `Please fill in "${missing.dataset.label}".`;
+        missing.focus();
+        return;
+      }
+      const email = inputs.find((input) => input.dataset.field === 'email');
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        email.setAttribute('aria-invalid', 'true');
+        status.textContent = 'Please check the email address, like name@example.com.';
+        email.focus();
+        return;
+      }
+
+      const body = new URLSearchParams();
+      for (const input of inputs) {
+        const id = fieldIds[input.dataset.field ?? ''];
+        const value = input.value.trim();
+        if (id && value) body.set(id, value);
+      }
+
+      submit.disabled = true;
+      status.textContent = 'Sending...';
+      try {
+        // Google doesn't let the page read its reply, so a sign-up counts as
+        // sent once the request goes through.
+        await fetch(action, { method: 'POST', mode: 'no-cors', body });
+        status.textContent = '';
+        thanksName.textContent =
+          inputs.find((input) => input.dataset.field === 'business')?.value.trim() ?? '';
+        form.hidden = true;
+        thanks.hidden = false;
+        thanks.focus();
+      } catch {
+        status.replaceChildren(
+          "That didn't go through. Check your connection and try again, or ",
+          Object.assign(document.createElement('a'), {
+            href: formUrl,
+            textContent: 'sign up on the Google Form instead',
+          }),
+          '.',
+        );
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    again.addEventListener('click', () => {
+      form.reset();
+      thanks.hidden = true;
+      form.hidden = false;
+      inputs[0]?.focus();
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-signup]').forEach(setUpSignup);
+</script>
+
+<style>
+  /* Sits inside the red sign-up box, so fields are cream with green text. */
+  .signup-form {
+    max-width: 30rem;
+    margin: var(--space-6) auto 0;
+    text-align: left;
+  }
+
+  form,
+  .thanks {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  form[hidden],
+  .thanks[hidden] {
+    display: none;
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .field label {
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .field__optional {
+    font-weight: var(--weight-regular);
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.85;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    min-height: var(--tap-target-min);
+    padding: var(--space-2) var(--space-4);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    background: var(--color-sun);
+    color: var(--color-accent-contrast);
+    font-family: var(--font-body);
+    /* 16px or more stops phones from zooming in when a box is tapped. */
+    font-size: max(1rem, 16px);
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    outline: 3px solid var(--color-accent-contrast);
+    outline-offset: 1px;
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: var(--color-accent-contrast);
+  }
+
+  .field__help {
+    margin: 0;
+    font-size: var(--text-xs);
+    opacity: 0.9;
+  }
+
+  .status {
+    margin: 0;
+    font-weight: var(--weight-semibold);
+    text-align: center;
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .status :global(a) {
+    color: inherit;
+  }
+
+  .action {
+    margin: var(--space-2) 0 0;
+    text-align: center;
+  }
+
+  /* Cream on red, like the banner button. */
+  .signup-form__submit {
+    min-width: 14rem;
+    background: var(--color-sun);
+    color: var(--color-accent-secondary);
+  }
+
+  .signup-form__submit:hover {
+    background: var(--color-heading);
+    color: var(--color-accent-secondary);
+  }
+
+  .thanks {
+    text-align: center;
+  }
+
+  .thanks:focus {
+    outline: none;
+  }
+
+  .thanks__title {
+    margin: 0;
+    font-family: var(--font-slanted);
+    font-style: italic;
+    font-weight: var(--weight-light);
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .thanks__text {
+    margin: 0;
+  }
+</style>
