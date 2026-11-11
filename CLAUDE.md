@@ -67,6 +67,12 @@ These REPLACE the older four-category contest that is currently on the live page
 ## Events data model (keep it, it carries over to the future main site)
 Events collection fields are shared with the future "Downtown Footfall Calendar": name, start/end date and time, location, category (IDA / City / Outside), expected crowd (small / medium / large), link, tips for businesses, short public description, show/hide toggle. Past events hide automatically.
 
+## The two Google Forms (built Nov 11, in the info@downtownindependence.com Google account)
+- "Season of Lights: Business Sign-Up". Editor: https://docs.google.com/forms/d/1YFHBOOIEPghlItJ7QOjcfakdRDJqTgXOzNIrTnaomUg/edit . 7 short-answer questions (Business name, Contact name, Email, Phone, Business address, Website or Facebook page, Notes), none required, linked to a Google Sheet of the same name, published to anyone with the link.
+- "Season of Lights: Window Contest Votes". Editor: https://docs.google.com/forms/d/1ZtjimrIXhjDZqbmWSTHLATUWBHo3syiJ2q7ha-Squ9Q/edit . 5 short-answer questions (Email, Favorite window 1, 2, 3, Newsletter), none required, linked to a Google Sheet of the same name, published to anyone with the link.
+- Both pre-filled links are in src/data/holiday-settings.json (CMS fields). If a question is added, removed, or retyped in either form, its entry ids change and the pre-filled link must be remade.
+- Tested Nov 11 from the local site: one sign-up ("TEST - please delete") and one vote (test@example.com, "TEST WINDOW A/B - please delete") arrived. Those test rows need deleting from the forms and sheets before counting.
+
 ## Still to come after the site update
-1. Build the two Google Forms (business sign-up, voting) and paste links into the CMS. Both forms must follow the setup above; walk Sydney through it one step at a time, then send a test sign-up and a test vote from the live site and check both sheets.
+1. Done Nov 11: both Google Forms built and connected (see above). After the site goes live, send one more test from the live site if Sydney wants extra confidence, and delete the test rows.
 2. Write a simple tutorial and invite Cindy, Jacquelyn, and Courtney as Pages CMS editors so Sydney is not a bottleneck.
