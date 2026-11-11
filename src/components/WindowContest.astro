@@ -11,6 +11,8 @@
 import type { HolidaySettings } from '../lib/settings';
 import { PRIZES } from '../lib/settings';
 import { buildVoteUrl, formatPlainDate, toBallotUrl } from '../lib/format';
+import { parseBallotConfig } from '../lib/ballot';
+import Ballot from './Ballot.astro';
 
 interface Props {
   settings: HolidaySettings;
@@ -38,6 +40,11 @@ const announcedText = winnersAnnounced ? formatPlainDate(winnersAnnounced, 'mont
 const sortedWinners = [...winners].sort((a, b) => a.place - b.place);
 const placeNames = ['1st place', '2nd place', '3rd place'];
 const isVoting = contestStage === 'voting-open';
+// The ballot built into the page needs a correctly made pre-filled link (see
+// src/lib/ballot.ts). Without one, the cards fall back to buttons that open
+// the Google Form.
+const ballotConfig = parseBallotConfig(votingFormUrl);
+const onSiteBallot = isVoting && ballotConfig !== null && participatingBusinesses.length > 0;
 ---
 
 <div class="contest">
@@ -119,14 +126,14 @@ const isVoting = contestStage === 'voting-open';
         <p class="stage__fineprint">
           One ballot per email address. Duplicates are removed before counting.
         </p>
-        {ballotUrl ? (
+        {onSiteBallot ? null : ballotUrl ? (
           <p class="stage__action">
             <a class="button" href={ballotUrl}>
               Open the ballot
             </a>
           </p>
         ) : (
-          <p class="stage__text">The ballot link is being added. Check back shortly.</p>
+          <p class="stage__text">The ballot is being added. Check back shortly.</p>
         )}
       </div>
     )
@@ -180,7 +187,17 @@ const isVoting = contestStage === 'voting-open';
   }
 
   {
-    participatingBusinesses.length > 0 && contestStage !== 'winners' && (
+    onSiteBallot && ballotConfig && (
+      <Ballot
+        businesses={participatingBusinesses}
+        config={ballotConfig}
+        deadlineText={deadlineText}
+      />
+    )
+  }
+
+  {
+    !onSiteBallot && participatingBusinesses.length > 0 && contestStage !== 'winners' && (
       <div class="windows" id="ballot">
         <h3 class="windows__title">
           {isVoting ? 'The ballot: participating windows' : 'Participating windows'}

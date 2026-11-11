@@ -69,7 +69,7 @@ content:
         pattern:
           regex: '^$|^https?://.+'
           message: 'Leave blank, or paste a full web address starting with https://'
-        description: In Google Forms, open the ⋮ menu, choose "Get pre-filled link", tick any one business, then "Get link" and paste it here. The site uses it to give every business card a "Vote for this window" button with that business already ticked. A plain form link also works, but then the buttons just open the empty ballot.
+        description: 'Powers the ballot on the page. In the voting Google Form, open the ⋮ menu, choose "Get pre-filled link", and type these exact answers: voter@example.com for the email question, WINDOW1, WINDOW2 and WINDOW3 for the three window questions, NEWSLETTER for the newsletter question. Click "Get link", copy it, and paste it here. If the link is wrong, the page falls back to buttons that open the Google Form.'
 
       - name: participatingBusinesses
         label: Participating businesses
@@ -77,13 +77,13 @@ content:
         list:
           collapsible:
             summary: '{fields.name}'
-        description: Businesses with a decorated window. During voting each one becomes a card with a vote button. Type each name exactly as it appears in the voting form.
+        description: Businesses with a decorated window. During voting each one becomes a card on the ballot. The name you type here is exactly what gets recorded in the votes sheet.
         fields:
           - name: name
             label: Business name
             type: string
             required: true
-            description: Must match the choice in the voting form exactly, including capital letters and punctuation.
+            description: Spelled the way you want it to appear in the votes sheet. Avoid renaming a business once voting has started, or its votes will be split between two spellings.
           - name: address
             label: Address
             type: string

@@ -1,0 +1,642 @@
+---
+/*
+ * The ballot, built into the page so voting looks like the rest of the site.
+ * Visitors tap up to three business cards, add their email, and submit. The
+ * vote is sent to the Google Form behind the scenes (see src/lib/ballot.ts),
+ * so it lands in the form's Google Sheet like any other response.
+ */
+import type { ParticipatingBusiness } from '../lib/settings';
+import type { BallotConfig } from '../lib/ballot';
+
+interface Props {
+  businesses: ParticipatingBusiness[];
+  config: BallotConfig;
+  /** "Thursday, December 31", shown above the submit button. */
+  deadlineText: string | null;
+}
+
+const { businesses, config, deadlineText } = Astro.props;
+const MAX_PICKS = 3;
+---
+
+<div
+  class="ballot"
+  id="ballot"
+  data-ballot
+  data-action={config.action}
+  data-form-url={config.formUrl}
+  data-email-field={config.fields.email}
+  data-window-fields={config.fields.windows.join(',')}
+  data-newsletter-field={config.fields.newsletter ?? ''}
+  data-max={MAX_PICKS}
+>
+  <h3 class="ballot__title">The ballot</h3>
+  <p class="ballot__note">
+    Tap up to {MAX_PICKS} favorite windows, then add your email at the bottom to submit
+    your vote.
+  </p>
+
+  <ul class="cards">
+    {
+      businesses.map((business) => (
+        <li class="card" data-card data-name={business.name}>
+          {business.photo && (
+            <img
+              class="card__photo"
+              src={business.photo}
+              alt={`The holiday window at ${business.name}`}
+              loading="lazy"
+            />
+          )}
+          <div class="card__body">
+            <p class="card__name">{business.name}</p>
+            {business.address && <p class="card__address">{business.address}</p>}
+            {business.link && (
+              <p class="card__link">
+                <a href={business.link}>Visit their page</a>
+              </p>
+            )}
+            <p class="card__action">
+              <button
+                type="button"
+                class="pick"
+                data-pick
+                aria-pressed="false"
+                aria-label={`Pick the window at ${business.name}`}
+              >
+                <span class="pick__off">Pick this window</span>
+                <span class="pick__on">
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M4 10.5l4 4 8-9" />
+                  </svg>
+                  Picked
+                </span>
+              </button>
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="ballot__limit" data-limit hidden>
+    You've picked {MAX_PICKS}. To choose a different window, tap one of your picks to
+    remove it first.
+  </p>
+
+  <form class="finish" id="ballot-finish" data-form novalidate>
+    <h3 class="finish__title">Your picks</h3>
+    <ol class="finish__picks" data-picks></ol>
+    <p class="finish__empty" data-empty>No windows picked yet. Tap "Pick this window" above.</p>
+
+    <div class="field">
+      <label for="ballot-email">Your email</label>
+      <input
+        id="ballot-email"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        required
+        data-email
+      />
+      <p class="field__help">
+        Only used to make sure everyone votes once. One ballot per email address.
+      </p>
+    </div>
+
+    {
+      config.fields.newsletter && (
+        <label class="check" for="ballot-newsletter">
+          <input id="ballot-newsletter" type="checkbox" data-newsletter />
+          <span>Send me the IDA newsletter with downtown news and events</span>
+        </label>
+      )
+    }
+
+    <p class="finish__status" data-status role="status" aria-live="polite"></p>
+
+    <p class="finish__action">
+      <button type="submit" class="button button--red finish__submit" data-submit>
+        Submit my vote
+      </button>
+    </p>
+    {deadlineText && <p class="finish__deadline">Voting closes {deadlineText}.</p>}
+  </form>
+
+  <div class="thanks" data-thanks hidden tabindex="-1">
+    <p class="thanks__title">Thank you for voting!</p>
+    <p class="thanks__text">Your picks:</p>
+    <ol class="finish__picks" data-thanks-picks></ol>
+    <p class="thanks__text">
+      Winners get a shout-out in the IDA newsletter. Sharing a phone? Each person can
+      vote with their own email.
+    </p>
+    <p class="finish__action">
+      <button type="button" class="button" data-again>Vote with another email</button>
+    </p>
+  </div>
+
+  <div class="bar" data-bar hidden>
+    <p class="bar__count"><span data-count>0</span> of {MAX_PICKS} picked</p>
+    <a class="button button--red bar__button" href="#ballot-finish">Finish voting</a>
+  </div>
+
+  <noscript>
+    <p class="ballot__note">
+      This ballot needs JavaScript. You can <a href={config.formUrl}>vote on the Google Form</a>
+      instead.
+    </p>
+  </noscript>
+</div>
+
+<script>
+  const STORAGE_KEY = 'season-of-lights-vote';
+
+  function setUpBallot(root: HTMLElement) {
+    const max = Number(root.dataset.max) || 3;
+    const action = root.dataset.action ?? '';
+    const formUrl = root.dataset.formUrl ?? '';
+    const emailField = root.dataset.emailField ?? '';
+    const windowFields = (root.dataset.windowFields ?? '').split(',');
+    const newsletterField = root.dataset.newsletterField ?? '';
+
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-card]')];
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const picksList = root.querySelector<HTMLOListElement>('[data-picks]')!;
+    const emptyNote = root.querySelector<HTMLElement>('[data-empty]')!;
+    const limitNote = root.querySelector<HTMLElement>('[data-limit]')!;
+    const email = root.querySelector<HTMLInputElement>('[data-email]')!;
+    const newsletter = root.querySelector<HTMLInputElement>('[data-newsletter]');
+    const status = root.querySelector<HTMLElement>('[data-status]')!;
+    const submit = root.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const thanks = root.querySelector<HTMLElement>('[data-thanks]')!;
+    const thanksPicks = root.querySelector<HTMLOListElement>('[data-thanks-picks]')!;
+    const again = root.querySelector<HTMLButtonElement>('[data-again]')!;
+    const bar = root.querySelector<HTMLElement>('[data-bar]')!;
+    const count = root.querySelector<HTMLElement>('[data-count]')!;
+
+    let picks: string[] = [];
+    let formInView = false;
+
+    const listItems = (target: HTMLOListElement, names: string[]) => {
+      target.replaceChildren(
+        ...names.map((name) => {
+          const item = document.createElement('li');
+          item.textContent = name;
+          return item;
+        }),
+      );
+    };
+
+    const render = () => {
+      const full = picks.length >= max;
+      const voted = !thanks.hidden;
+      for (const card of cards) {
+        const name = card.dataset.name ?? '';
+        const picked = picks.includes(name) && !voted;
+        const button = card.querySelector<HTMLButtonElement>('[data-pick]')!;
+        card.classList.toggle('card--picked', picked);
+        button.setAttribute('aria-pressed', String(picked));
+        // After voting, picking is paused until "Vote with another email".
+        button.disabled = voted || (full && !picked);
+      }
+      listItems(picksList, picks);
+      emptyNote.hidden = picks.length > 0;
+      limitNote.hidden = !full || voted;
+      count.textContent = String(picks.length);
+      bar.hidden = picks.length === 0 || formInView || !thanks.hidden;
+    };
+
+    for (const card of cards) {
+      card.querySelector('[data-pick]')!.addEventListener('click', () => {
+        const name = card.dataset.name ?? '';
+        if (picks.includes(name)) {
+          picks = picks.filter((pick) => pick !== name);
+        } else if (picks.length < max) {
+          picks = [...picks, name];
+        }
+        status.textContent = '';
+        render();
+      });
+    }
+
+    // Hide the floating "Finish voting" bar once the email box is on screen.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        formInView = entry.isIntersecting;
+        render();
+      }).observe(form);
+    }
+
+    const showThanks = (names: string[]) => {
+      listItems(thanksPicks, names);
+      form.hidden = true;
+      thanks.hidden = false;
+      render();
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const address = email.value.trim();
+      if (picks.length === 0) {
+        status.textContent = 'Pick at least one window above before submitting.';
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) {
+        status.textContent = 'Please enter your email address, like name@example.com.';
+        email.focus();
+        return;
+      }
+
+      const body = new URLSearchParams();
+      body.set(emailField, address);
+      picks.forEach((name, index) => body.set(windowFields[index], name));
+      if (newsletterField && newsletter?.checked) body.set(newsletterField, 'Yes');
+
+      submit.disabled = true;
+      status.textContent = 'Sending your vote...';
+      try {
+        // Google doesn't let the page read its reply, so a vote counts as
+        // sent once the request goes through.
+        await fetch(action, { method: 'POST', mode: 'no-cors', body });
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(picks));
+        } catch {
+          // Storage can be off in private browsing; the thank-you still shows.
+        }
+        status.textContent = '';
+        showThanks(picks);
+        thanks.focus();
+      } catch {
+        status.innerHTML = '';
+        status.append(
+          "Your vote didn't go through. Check your connection and try again, or ",
+          Object.assign(document.createElement('a'), {
+            href: formUrl,
+            textContent: 'vote on the Google Form instead',
+          }),
+          '.',
+        );
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    again.addEventListener('click', () => {
+      picks = [];
+      email.value = '';
+      if (newsletter) newsletter.checked = false;
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // Nothing to clear.
+      }
+      thanks.hidden = true;
+      form.hidden = false;
+      render();
+      root.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Someone who already voted on this device sees their thank-you again.
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
+      if (Array.isArray(saved) && saved.length > 0) showThanks(saved.map(String));
+    } catch {
+      // No saved vote.
+    }
+
+    render();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-ballot]').forEach(setUpBallot);
+</script>
+
+<style>
+  .ballot {
+    scroll-margin-top: var(--space-6);
+  }
+
+  .ballot__title,
+  .finish__title {
+    margin: 0;
+    font-size: var(--text-xl);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ballot__note {
+    margin: var(--space-2) auto var(--space-5);
+    max-width: 30rem;
+    font-size: var(--text-sm);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .ballot__limit {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-sm);
+    text-align: center;
+    color: var(--color-heading);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: 2px solid var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    transition: border-color 150ms ease;
+  }
+
+  .card--picked {
+    border-color: var(--color-accent);
+  }
+
+  .card__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .card__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    text-align: center;
+  }
+
+  .card__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  .card__address {
+    margin: 0;
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .card__link {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-sm);
+  }
+
+  .card__action {
+    margin: var(--space-3) 0 0;
+  }
+
+  /* The pick toggle: cream outline when off, solid red with a check when on. */
+  .pick {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-target-min);
+    min-width: 11rem;
+    padding: var(--space-2) var(--space-5);
+    border: 2px solid var(--color-heading);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-heading);
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .pick:hover:not(:disabled) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .pick[aria-pressed='true'] {
+    border-color: var(--color-accent-secondary);
+    background: var(--color-accent-secondary);
+    color: var(--color-accent-secondary-contrast);
+  }
+
+  .pick:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pick__on {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .pick[aria-pressed='true'] .pick__on {
+    display: inline-flex;
+  }
+
+  .pick[aria-pressed='true'] .pick__off {
+    display: none;
+  }
+
+  .pick__on svg {
+    width: 1.1em;
+    height: 1.1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The finish box: picks, email and submit. */
+  .finish,
+  .thanks {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    border: 1.5px solid var(--color-frame);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    scroll-margin-top: var(--space-6);
+  }
+
+  .finish[hidden],
+  .thanks[hidden] {
+    display: none;
+  }
+
+  .finish__picks {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding-left: 1.5em;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  .finish__picks:empty {
+    display: none;
+  }
+
+  .finish__empty {
+    margin: 0;
+    font-size: var(--text-sm);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .field label {
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  .field input {
+    width: 100%;
+    min-height: var(--tap-target-min);
+    padding: var(--space-2) var(--space-4);
+    border: 1.5px solid var(--color-frame);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-deep);
+    color: var(--color-heading);
+    font-family: var(--font-body);
+    /* 16px or more stops phones from zooming in when the box is tapped. */
+    font-size: max(1rem, 16px);
+  }
+
+  .field input:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .field__help {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .check input {
+    flex: none;
+    width: 1.35rem;
+    height: 1.35rem;
+    margin: 0.1rem 0 0;
+    accent-color: var(--color-accent);
+  }
+
+  .finish__status {
+    margin: 0;
+    font-size: var(--text-sm);
+    text-align: center;
+    color: var(--color-heading);
+  }
+
+  .finish__status:empty {
+    display: none;
+  }
+
+  .finish__action {
+    margin: 0;
+    text-align: center;
+  }
+
+  .finish__submit {
+    min-width: 14rem;
+  }
+
+  .finish__deadline {
+    margin: 0;
+    font-size: var(--text-xs);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .thanks {
+    text-align: center;
+  }
+
+  .thanks .finish__picks {
+    justify-self: center;
+    text-align: left;
+  }
+
+  .thanks__title {
+    margin: 0;
+    font-family: var(--font-slanted);
+    font-style: italic;
+    font-weight: var(--weight-light);
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  .thanks__text {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  /* Floating reminder at the bottom of the screen while picking. */
+  .bar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--page-gutter) calc(var(--space-3) + env(safe-area-inset-bottom));
+    border-top: var(--border-hairline) solid var(--color-frame);
+    background: var(--color-bg-deep);
+    box-shadow: 0 -8px 24px var(--color-shadow);
+  }
+
+  .bar[hidden] {
+    display: none;
+  }
+
+  .bar__count {
+    margin: 0;
+    font-family: var(--font-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+</style>

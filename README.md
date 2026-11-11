@@ -125,23 +125,43 @@ Nothing switches on its own.
 | Stage | What shows |
 | --- | --- |
 | Coming soon | Prizes, "Voting opens Saturday, November 28", the red business sign-up box, and the list of entered windows |
-| Voting open | Prizes, the deadline, an "Open the ballot" button, and a card for each business with a "Vote for this window" button |
+| Voting open | Prizes, the deadline, and the ballot: a card for each business with a "Pick this window" button, then email and submit |
 | Voting closed | "Winners will be announced the week of ..." from the CMS date |
 | Winners | 1st, 2nd and 3rd place with prizes, and photos when provided |
 
 Prize amounts ($150, $75, $50) are set in `src/lib/settings.ts`.
 
-### Vote buttons with the business already ticked
+### The ballot on the page
 
-Paste a Google Forms **pre-filled link** into "Voting form link (pre-filled)":
-in the form editor, open the ⋮ menu, choose **Get pre-filled link**, tick any
-one business, then **Get link**. The site swaps that business for each card's
-business, so every "Vote for this window" button opens the ballot with the
-right box already ticked (`buildVoteUrl` in `src/lib/format.ts`).
+During voting, the business cards are the ballot. Visitors tap "Pick this
+window" on up to three cards, type their email (plus an optional newsletter
+box), and tap "Submit my vote". A floating "Finish voting" bar helps on phones.
+After voting they see a thank-you with their picks, and a "Vote with another
+email" button for people sharing a phone.
 
-Business names in Pages CMS must match the choices in the form exactly. If
-they don't, the ballot still opens, just with nothing ticked. A plain form
-link also works; the buttons then open the empty ballot.
+Behind the scenes the page sends each vote to a Google Form, so votes land in
+that form's Google Sheet like any other response (`src/components/Ballot.astro`
+and `src/lib/ballot.ts`). Google doesn't let the page see whether it accepted
+a vote, so the form must be set up so it can't reject one:
+
+- Five **short answer** questions: Email, Favorite window 1, Favorite window 2,
+  Favorite window 3, Newsletter. None marked required. No response
+  validation.
+- Settings: not limited to one response per person, no Google sign-in, email
+  collection turned off (the Email question does that job).
+- Make a **pre-filled link** with these exact answers and paste it into
+  "Voting form link (pre-filled)" in Pages CMS: `voter@example.com`,
+  `WINDOW1`, `WINDOW2`, `WINDOW3`, `NEWSLETTER`. The site reads the link to
+  learn which question is which.
+
+Send a test vote from the live site before voting opens and check it arrives
+in the sheet. If the pasted link isn't a correctly made pre-filled link, the
+page falls back to buttons that open the Google Form instead
+(`buildVoteUrl` in `src/lib/format.ts`).
+
+Counting: each row has up to three business names in the three window
+columns. Remove duplicate emails first, then count how many times each name
+appears across those three columns.
 
 ## Turning on the newsletter signup
 
