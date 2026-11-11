@@ -8,7 +8,7 @@
  *   Full screen    Days side by side in columns, like the flyer
  */
 import type { EventDay } from '../lib/events';
-import { clockParts, splitLinkingWords } from '../lib/format';
+import { clockParts, formatWeekday, splitLinkingWords } from '../lib/format';
 import SunDate from './SunDate.astro';
 import Sparkle from './Sparkle.astro';
 import EventIcon from './EventIcon.astro';
@@ -40,6 +40,7 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
           )}
           <div class="day__date">
             <SunDate date={day.date} />
+            <p class="day__weekday" aria-hidden="true">{formatWeekday(day.date)}</p>
           </div>
           <ol class="day__events">
             {day.events.map((entry, index) => {
@@ -187,6 +188,18 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
   .day__divider :global(.sparkle) {
     width: 1.75rem;
     height: 1.75rem;
+  }
+
+  /* "SATURDAY" under the date circle. */
+  .day__weekday {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-eyebrow);
   }
 
   .day__events {

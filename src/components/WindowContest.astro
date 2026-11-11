@@ -81,8 +81,8 @@ const signupConfig = parseSignupConfig(businessSignupUrl);
   {
     contestStage === 'coming-soon' && (
       <div class="signup" id="signup">
-        <p class="signup__eyebrow">For downtown businesses</p>
-        <h3 class="signup__title">Enter your window, free</h3>
+        <p class="signup__eyebrow">For downtown businesses · Free to enter</p>
+        <h3 class="signup__title">Enter your window &amp; win cash</h3>
         <p class="signup__text">
           Decorate your storefront window for the season and sign up to be on
           the ballot. The top three windows win:
@@ -121,7 +121,7 @@ const signupConfig = parseSignupConfig(businessSignupUrl);
   }
 
   {
-    isVoting && (
+    isVoting && !onSiteBallot && (
       <div class="stage stage--open">
         <p class="stage__headline">Voting is open</p>
         <p class="stage__text">

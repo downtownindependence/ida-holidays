@@ -10,6 +10,7 @@ import VolunteerCallout from '../components/VolunteerCallout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { getVisibleEvents, groupEventsByDay } from '../lib/events';
+import { formatWeekday } from '../lib/format';
 import { settings, isVolunteerCalloutVisible } from '../lib/settings';
 
 const title = 'Season of Lights | Downtown Independence';
@@ -19,26 +20,58 @@ const description =
 const eventDays = groupEventsByDay(await getVisibleEvents());
 const santaSpots = settings.santaPhotoSpots;
 const showVolunteerCallout = isVolunteerCalloutVisible(settings.volunteerCallout);
+
+// "Upcoming Saturdays" once every date shown is a Saturday (after the Nov 16
+// meeting drops off), so it's clear these all happen on Saturdays.
+const allSaturdays =
+  eventDays.length > 0 && eventDays.every((day) => formatWeekday(day.date) === 'Saturday');
+const eventsTitle = allSaturdays ? 'Upcoming Saturdays' : 'Upcoming events';
+
+// The flyer's QR code opens this page. While voting is open, the ballot comes
+// first, right under the headline, and the events follow it.
+const votingFirst = settings.contestStage === 'voting-open';
 ---
 
 <BaseLayout title={title} description={description}>
-  <Hero datelineTop="Every Saturday" datelineFrom="Nov 28" datelineTo="Dec 19" />
+  <Hero
+    datelineTop="Every Saturday"
+    datelineFrom="Nov 28"
+    datelineTo="Dec 19"
+    compact={votingFirst}
+  />
 
   <VoteBanner settings={settings} />
 
   <main id="main">
-    <Section id="events" eyebrow="Mark your calendar" title="Upcoming events" wide framed>
+    {
+      votingFirst && (
+        <Section
+          id="window-contest"
+          eyebrow="Vote for your favorite"
+          title="Holiday Window Display Contest"
+          tone="panel"
+        >
+          <WindowContest settings={settings} />
+        </Section>
+      )
+    }
+
+    <Section id="events" eyebrow="Mark your calendar" title={eventsTitle} wide framed>
       <EventList days={eventDays} />
     </Section>
 
-    <Section
-      id="window-contest"
-      eyebrow="Vote for your favorite"
-      title="Holiday Window Display Contest"
-      tone="panel"
-    >
-      <WindowContest settings={settings} />
-    </Section>
+    {
+      !votingFirst && (
+        <Section
+          id="window-contest"
+          eyebrow="Vote for your favorite"
+          title="Holiday Window Display Contest"
+          tone="panel"
+        >
+          <WindowContest settings={settings} />
+        </Section>
+      )
+    }
 
     {
       santaSpots.length > 0 && (

@@ -1,0 +1,29 @@
+---
+/*
+ * holidays.downtownindependence.com/vote
+ *
+ * A short address for "Vote for this window" signs or extra QR codes. It
+ * sends people straight to the ballot while voting is open, and to the
+ * contest section the rest of the time. The flyer's QR code doesn't need
+ * this: it opens the homepage, which already puts the ballot first during
+ * voting.
+ */
+import { settings } from '../lib/settings';
+
+const target = settings.contestStage === 'voting-open' ? '/#ballot' : '/#window-contest';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={new URL(target, Astro.site).toString()} />
+    <meta name="robots" content="noindex" />
+    <title>Vote for your favorite window | Season of Lights</title>
+  </head>
+  <body>
+    <p><a href={target}>Go to the Season of Lights window contest</a></p>
+  </body>
+</html>

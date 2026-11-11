@@ -110,6 +110,22 @@ in script on its own line. The words "to" and "or" in times are set in script.
 - Full laptop screen: days side by side in columns, like the flyer, inside a
   thin cream frame.
 
+## What the flyer's QR code opens
+
+The flyer's QR code opens the homepage (https://holidays.downtownindependence.com,
+checked Nov 11). While the contest stage is "Voting open", the homepage puts
+the ballot first: a smaller header, the red banner with "Vote now", then the
+ballot (nothing pre-selected), then the events. In every other stage the
+events come first.
+
+`/vote` (holidays.downtownindependence.com/vote) is a short address for any
+future window signs or extra QR codes. It jumps straight to the ballot during
+voting and to the contest section otherwise (`src/pages/vote.astro`).
+
+Each date circle has its weekday under it ("SATURDAY"). The events heading
+reads "Upcoming Saturdays" when every date shown is a Saturday, and
+"Upcoming events" otherwise (like while the Nov 16 meeting is still listed).
+
 ## Vote banner
 
 A red banner right under the headline points visitors to the contest, since

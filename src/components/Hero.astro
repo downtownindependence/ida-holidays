@@ -11,12 +11,14 @@ interface Props {
   datelineFrom: string;
   /** For example "Dec 19". */
   datelineTo: string;
+  /** Smaller header while voting is open, so the ballot shows sooner on a phone. */
+  compact?: boolean;
 }
 
-const { datelineTop, datelineFrom, datelineTo } = Astro.props;
+const { datelineTop, datelineFrom, datelineTo, compact = false } = Astro.props;
 ---
 
-<header class="hero">
+<header class:list={['hero', compact && 'hero--compact']}>
   <div class="hero__inner">
     <a class="hero__logo" href="https://downtownindependence.com">
       <img
@@ -48,6 +50,24 @@ const { datelineTop, datelineFrom, datelineTo } = Astro.props;
     padding-block: clamp(var(--space-8), 6vw, var(--space-16)) var(--space-8);
     padding-inline: var(--page-gutter);
     text-align: center;
+  }
+
+  .hero--compact {
+    padding-block: var(--space-6);
+  }
+
+  .hero--compact .hero__inner {
+    max-width: 24rem;
+  }
+
+  .hero--compact .hero__logo {
+    width: 3.5rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero--compact .hero__dateline {
+    margin-top: var(--space-3);
+    font-size: var(--text-xl);
   }
 
   .hero__inner {

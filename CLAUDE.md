@@ -56,6 +56,9 @@ These REPLACE the older four-category contest that is currently on the live page
 - The "Season of lights" headline is NOT a font. It is Courtney's lettering cut out of the flyer PDF as a see-through picture (public/images/season-of-lights.webp). Sydney rejected free script fonts for it (Dancing Script was the closest; bouncy alternatives looked childish). Sydney is checking with Courtney that using the lettering is OK; assume yes unless told otherwise.
 - Dates shown in cream circles with a sunburst (month small on top, day large), one per day, events stacked underneath with gold sparkles between them.
 - IDA logo (the fountain badge, from Downloads/IDA Logo (1).png) sits small at the top and larger in the footer. Its inside is filled cream so the brown and sage artwork shows on the green background (public/images/ida-logo.webp).
+- The flyer's QR code (Downloads/IDA_Holidays_QR_black.svg) decodes to https://holidays.downtownindependence.com, the homepage. While voting is open the homepage puts the ballot first (compact header, banner, ballot, then events), as Sydney asked. /vote is a short address that jumps to the ballot, for any future window signs.
+- Each date circle shows its weekday ("SATURDAY"); the events heading becomes "Upcoming Saturdays" once every listed date is a Saturday.
+- The business box reads "Enter your window & win cash" with "Free to enter" in the small line above it.
 - A red "Vote for your favorite holiday window display!" banner sits right under the headline, because the QR code lands on this page and voting must be easy to find. It follows the contest stage. The events sit inside a thin cream frame like the flyer's box.
 - Footer matches the flyer: "Brought to you by the City of Independence & Independence Downtown Association".
 - Mobile-first and lightweight; most visitors arrive by QR code on a phone.
