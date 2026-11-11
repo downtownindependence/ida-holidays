@@ -67,9 +67,8 @@ so visitors never see an empty box:
 The events section always renders. With no upcoming visible events it shows a
 friendly "Event details coming soon" message instead of a list.
 
-The section is headed "Upcoming events" rather than "Saturday events", because
-the program also includes dates that are not Saturdays, such as the November
-community meeting.
+The section is headed "Upcoming Saturdays", since every event is on a
+Saturday.
 
 ## Event times and timezones
 
@@ -122,9 +121,8 @@ events come first.
 future window signs or extra QR codes. It jumps straight to the ballot during
 voting and to the contest section otherwise (`src/pages/vote.astro`).
 
-Each date circle has its weekday under it ("SATURDAY"). The events heading
-reads "Upcoming Saturdays" when every date shown is a Saturday, and
-"Upcoming events" otherwise (like while the Nov 16 meeting is still listed).
+The events heading is "Upcoming Saturdays". Every Season of Lights event is
+on a Saturday, so only add Saturday events.
 
 ## Vote banner
 

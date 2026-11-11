@@ -53,13 +53,6 @@ export function formatMonthShort(date: Date): string {
     .toUpperCase();
 }
 
-/** "Saturday", shown under each date circle so nobody has to check a calendar. */
-export function formatWeekday(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: SITE_TIME_ZONE }).format(
-    date,
-  );
-}
-
 /** "28" for the large day number in a date circle. */
 export function formatDayNumber(date: Date): string {
   return new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: SITE_TIME_ZONE }).format(

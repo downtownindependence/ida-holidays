@@ -41,7 +41,7 @@ These REPLACE the older four-category contest that is currently on the live page
 - Prize amounts are shown only inside the red business box, not to shoppers (Sydney worried big cash tiles would confuse people walking downtown). Shoppers see one line saying the top three windows win cash prizes for the business.
 
 ## Events
-- Mon Nov 16, 5:30 to 8 PM: Community Meeting and Wreath Stringing Party, Independence Landing Apartments (added by a board member through the CMS).
+- The Nov 16 Community Meeting and Wreath Stringing Party was removed Nov 11 at Sydney's request (not part of Season of Lights, and the only non-Saturday). Only Saturday events belong on this site.
 - The Saturday events come from Courtney's newest flyer PDF ("Holiday Flyer (IN PROGRESS: Old Text)", Nov 11). Despite the file name, Sydney confirmed (Nov 11) this flyer IS what's actually happening. The older "Solstice Saturdays" flyer (Downloads/Holiday Flyer.pdf) was placeholders and branding only; never use it for content. The older list in Cindy's first email (Sip-n-Stroll Nov 28; Santa Train at Elks Lodge) is replaced by the flyer.
   - Sat Nov 28: Letters to Santa & Hot Cocoa, Independence Hotel, free, 4 to 6 PM.
   - Sat Dec 5: Holiday Bazaar, Elks Club, free, 9 AM to 4 PM. Cocoa Station, Riverfront Park, free, 11 AM to 3 PM. Santa Train, Downtown C Street, free, 12 to 3 PM.
@@ -57,7 +57,8 @@ These REPLACE the older four-category contest that is currently on the live page
 - Dates shown in cream circles with a sunburst (month small on top, day large), one per day, events stacked underneath with gold sparkles between them.
 - IDA logo (the fountain badge, from Downloads/IDA Logo (1).png) sits small at the top and larger in the footer. Its inside is filled cream so the brown and sage artwork shows on the green background (public/images/ida-logo.webp).
 - The flyer's QR code (Downloads/IDA_Holidays_QR_black.svg) decodes to https://holidays.downtownindependence.com, the homepage. While voting is open the homepage puts the ballot first (compact header, banner, ballot, then events), as Sydney asked. /vote is a short address that jumps to the ballot, for any future window signs.
-- Each date circle shows its weekday ("SATURDAY"); the events heading becomes "Upcoming Saturdays" once every listed date is a Saturday.
+- The events heading is always "Upcoming Saturdays" (no weekday labels; every event is on a Saturday).
+- A QR code for /vote is in Desktop/IDA/Season of Lights QR (SVG and PNG), made Nov 11 for window signs or other print.
 - The business box reads "Enter your window & win cash" with "Free to enter" in the small line above it.
 - A red "Vote for your favorite holiday window display!" banner sits right under the headline, because the QR code lands on this page and voting must be easy to find. It follows the contest stage. The events sit inside a thin cream frame like the flyer's box.
 - Footer matches the flyer: "Brought to you by the City of Independence & Independence Downtown Association".
