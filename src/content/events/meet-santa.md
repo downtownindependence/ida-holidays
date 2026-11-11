@@ -6,6 +6,6 @@ location: Independence Hotel
 cost: FREE
 category: IDA
 crowd: medium
-description: Stop by the Independence Hotel to meet Santa.
+icon: santa
 visible: true
 ---

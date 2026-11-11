@@ -18,5 +18,6 @@ description: >-
   wreaths that are hung up for the holidays? Many hands will make light work -
   help us to re-string the wreaths. 
 link: https://www.zeffy.com/en-US/ticketing/community-meeting-and-wreath-party
+icon: wreath
 visible: true
 ---

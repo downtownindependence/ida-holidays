@@ -69,11 +69,16 @@
   --color-sun-text: var(--brand-red);
   /* The small gold sparkle between events on the same day. */
   --color-sparkle: var(--brand-gold);
+  /* The little line drawings on events. */
+  --color-icon: var(--brand-gold);
 
   --color-link: var(--brand-gold);
   --color-link-hover: var(--brand-gold-light);
   --color-link-underline: var(--brand-gold-60);
   --color-focus: var(--brand-gold);
+
+  /* The thin frame around the events, like the box on the flyer. */
+  --color-frame: var(--brand-cream-64);
 
   --color-rule: var(--brand-cream-16);
   --color-rule-strong: var(--brand-cream-24);

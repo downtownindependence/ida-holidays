@@ -87,12 +87,35 @@ flyer. A few optional fields in Pages CMS match how the flyer shows things:
 
 - **Cost**: shown after the location, for example "FREE" or "$10".
 - **Highlight**: a short perk in slanted type, for example "Free Santa hats".
+- **Little drawing**: a small gold line drawing above the event name (cocoa
+  mug, Santa hat, train, gift, letter, camera, pancakes, wreath, tree). Drawn
+  in `src/components/EventIcon.astro`; the list lives in `src/lib/icons.ts`.
+- **Button text**: with a link, labels the button (default "More details").
+  With no link, shows a dashed placeholder that can't be clicked, like
+  "Tickets coming soon".
+- **Short description**: optional. Only worth adding when it says more than
+  the event name.
 - **Custom time text**: replaces the start and end times, for example
   "9AM or 12PM" for two seatings. The start and end times are still needed so
   the event sorts and drops off the site at the right time.
 
 A lowercase "and" in an event name ("Cocoa Station and Photo Booth") is set
 in script on its own line. The words "to" and "or" in times are set in script.
+
+## Layout of the events
+
+- Phone: one day after another, with a gold sparkle on the line between days.
+- Half a laptop screen (tablet width): one row per day, date circle on the
+  left and that day's events on the right.
+- Full laptop screen: days side by side in columns, like the flyer, inside a
+  thin cream frame.
+
+## Vote banner
+
+A red banner right under the headline points visitors to the contest, since
+most arrive from the flyer's QR code. Its wording and button follow the
+contest stage: "How it works" before voting, "Vote now" during voting (jumps
+straight to the business cards), and so on (`src/components/VoteBanner.astro`).
 
 ## Window contest stages
 

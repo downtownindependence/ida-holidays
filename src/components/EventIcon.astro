@@ -1,0 +1,126 @@
+---
+/*
+ * Small line drawings for events, picked with the "Little drawing" field in
+ * Pages CMS. Drawn in the flyer's gold with simple rounded strokes so they
+ * sit comfortably next to the hand-drawn lettering.
+ */
+import type { EventIconName } from '../lib/icons';
+
+interface Props {
+  name: EventIconName;
+}
+
+const { name } = Astro.props;
+---
+
+<svg class="icon" viewBox="0 0 48 48" aria-hidden="true">
+  {
+    name === 'cocoa' && (
+      <>
+        <path d="M11 19h21v13a8 8 0 0 1-8 8h-5a8 8 0 0 1-8-8z" />
+        <path d="M32 23h3a4.5 4.5 0 0 1 0 9h-3" />
+        <path d="M17 14c-2-2.5 2-4 0-7M22.5 14c-2-2.5 2-4 0-7M28 14c-2-2.5 2-4 0-7" />
+        <path d="M8 44h28" />
+      </>
+    )
+  }
+  {
+    name === 'santa' && (
+      <>
+        <rect x="7" y="34" width="30" height="7" rx="3.5" />
+        <path d="M10 34C12 21 20 11 30 10c6-.5 10 3 9.5 8.5" />
+        <path d="M34 34c-1-7-1-11 3-13.5" />
+        <circle cx="40" cy="22" r="3.5" />
+      </>
+    )
+  }
+  {
+    name === 'train' && (
+      <>
+        <rect x="27" y="13" width="13" height="21" rx="1.5" />
+        <rect x="30.5" y="17" width="6" height="6" rx="1" />
+        <rect x="8" y="22" width="19" height="12" rx="2" />
+        <path d="M12 22v-6h6v6M10 16h10" />
+        <path d="M8 34l-3 5h7" />
+        <circle cx="15" cy="38" r="4" />
+        <circle cx="27" cy="38" r="4" />
+        <circle cx="37" cy="38.5" r="3" />
+      </>
+    )
+  }
+  {
+    name === 'gift' && (
+      <>
+        <rect x="9" y="21" width="30" height="19" rx="1.5" />
+        <rect x="7" y="15" width="34" height="6" rx="1.5" />
+        <path d="M24 15v25" />
+        <path d="M24 15c-3-7-11-7-10-2 .5 2.5 6 2 10 2zM24 15c3-7 11-7 10-2-.5 2.5-6 2-10 2z" />
+      </>
+    )
+  }
+  {
+    name === 'letter' && (
+      <>
+        <rect x="6" y="12" width="36" height="25" rx="2" />
+        <path d="M6.5 14 24 27 41.5 14" />
+        <path d="M24 42c-3-2.5-5-4-5-6a2.5 2.5 0 0 1 5-1 2.5 2.5 0 0 1 5 1c0 2-2 3.5-5 6z" />
+      </>
+    )
+  }
+  {
+    name === 'camera' && (
+      <>
+        <rect x="6" y="16" width="36" height="24" rx="3" />
+        <path d="M16 16l3-5h10l3 5" />
+        <circle cx="24" cy="28" r="7" />
+        <circle cx="24" cy="28" r="2.5" />
+        <circle cx="36" cy="21" r="1" />
+      </>
+    )
+  }
+  {
+    name === 'breakfast' && (
+      <>
+        <ellipse cx="24" cy="39" rx="19" ry="4" />
+        <rect x="10" y="29" width="28" height="6" rx="3" />
+        <rect x="11" y="23" width="26" height="6" rx="3" />
+        <rect x="12" y="17" width="24" height="6" rx="3" />
+        <rect x="20" y="12.5" width="8" height="4.5" rx="1" />
+        <path d="M31 20v6a1.5 1.5 0 0 0 3 0v-4" />
+      </>
+    )
+  }
+  {
+    name === 'wreath' && (
+      <>
+        <circle cx="24" cy="22" r="14" />
+        <circle cx="24" cy="22" r="7" />
+        <path d="M14 12l3 3M34 12l-3 3M10 22h4M38 22h-4M14 32l3-3M34 32l-3-3M24 8v3" />
+        <path d="M24 36c-5-5-10-2-7 1 2 1.5 5 0 7-1zM24 36c5-5 10-2 7 1-2 1.5-5 0-7-1zM24 36l-4 8M24 36l4 8" />
+      </>
+    )
+  }
+  {
+    name === 'tree' && (
+      <>
+        <path d="M24 8 13 22h6l-9 13h28l-9-13h6z" />
+        <path d="M21 35v6h6v-6" />
+        <path d="M24 3v3M22 4.5h4" />
+      </>
+    )
+  }
+</svg>
+
+<style>
+  .icon {
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    margin-inline: auto;
+    fill: none;
+    stroke: var(--color-icon);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>

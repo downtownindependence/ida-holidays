@@ -149,6 +149,19 @@ const shareImage = new URL('/images/share.jpg', Astro.site).toString();
     color: var(--color-accent-secondary-contrast);
   }
 
+  /* A button that isn't ready yet, like "Tickets coming soon". */
+  .button--placeholder {
+    background: transparent;
+    border: var(--border-hairline) dashed var(--color-frame);
+    color: var(--color-text);
+    cursor: default;
+  }
+
+  .button--placeholder:hover {
+    background: transparent;
+    color: var(--color-text);
+  }
+
   .skip-link {
     position: absolute;
     left: var(--space-4);

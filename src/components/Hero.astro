@@ -18,6 +18,14 @@ const { datelineTop, datelineFrom, datelineTo } = Astro.props;
 
 <header class="hero">
   <div class="hero__inner">
+    <a class="hero__logo" href="https://downtownindependence.com">
+      <img
+        src="/images/ida-logo.webp"
+        alt="Independence Downtown Association"
+        width="480"
+        height="421"
+      />
+    </a>
     <p class="hero__eyebrow">Downtown Independence</p>
     <h1 class="hero__title">
       <img
@@ -45,6 +53,18 @@ const { datelineTop, datelineFrom, datelineTo } = Astro.props;
   .hero__inner {
     max-width: var(--hero-max);
     margin-inline: auto;
+  }
+
+  .hero__logo {
+    display: block;
+    width: 5rem;
+    margin: 0 auto var(--space-5);
+  }
+
+  .hero__logo img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .hero__eyebrow {

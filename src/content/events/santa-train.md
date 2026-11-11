@@ -6,6 +6,6 @@ location: Downtown, C Street
 cost: FREE
 category: IDA
 crowd: large
-description: Catch the Santa Train downtown on C Street.
+icon: train
 visible: true
 ---

@@ -7,6 +7,6 @@ cost: FREE
 highlight: Free candy canes
 category: IDA
 crowd: medium
-description: Hot cocoa and a holiday photo booth, with free candy canes.
+icon: camera
 visible: true
 ---

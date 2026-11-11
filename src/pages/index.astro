@@ -5,6 +5,7 @@ import Section from '../components/Section.astro';
 import EventList from '../components/EventList.astro';
 import SantaSpots from '../components/SantaSpots.astro';
 import WindowContest from '../components/WindowContest.astro';
+import VoteBanner from '../components/VoteBanner.astro';
 import VolunteerCallout from '../components/VolunteerCallout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import SiteFooter from '../components/SiteFooter.astro';
@@ -23,8 +24,10 @@ const showVolunteerCallout = isVolunteerCalloutVisible(settings.volunteerCallout
 <BaseLayout title={title} description={description}>
   <Hero datelineTop="Every Saturday" datelineFrom="Nov 28" datelineTo="Dec 19" />
 
+  <VoteBanner settings={settings} />
+
   <main id="main">
-    <Section id="events" eyebrow="Mark your calendar" title="Upcoming events" wide>
+    <Section id="events" eyebrow="Mark your calendar" title="Upcoming events" wide framed>
       <EventList days={eventDays} />
     </Section>
 

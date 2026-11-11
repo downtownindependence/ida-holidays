@@ -7,6 +7,6 @@ cost: FREE
 highlight: Free Santa hats
 category: IDA
 crowd: medium
-description: Hot cocoa and a holiday photo booth, with free Santa hats.
+icon: cocoa
 visible: true
 ---

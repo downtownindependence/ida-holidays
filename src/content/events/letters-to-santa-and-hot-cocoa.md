@@ -6,6 +6,6 @@ location: Independence Hotel
 cost: FREE
 category: IDA
 crowd: medium
-description: Write a letter to Santa and warm up with hot cocoa.
+icon: letter
 visible: true
 ---

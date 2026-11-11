@@ -181,7 +181,7 @@ const isVoting = contestStage === 'voting-open';
 
   {
     participatingBusinesses.length > 0 && contestStage !== 'winners' && (
-      <div class="windows">
+      <div class="windows" id="ballot">
         <h3 class="windows__title">
           {isVoting ? 'The ballot: participating windows' : 'Participating windows'}
         </h3>
@@ -375,6 +375,10 @@ const isVoting = contestStage === 'voting-open';
     background: var(--color-heading);
     color: var(--color-accent-secondary);
     filter: brightness(0.95);
+  }
+
+  .windows {
+    scroll-margin-top: var(--space-6);
   }
 
   .windows__title {

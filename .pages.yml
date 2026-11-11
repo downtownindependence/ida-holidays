@@ -219,7 +219,7 @@ content:
         options:
           format: "yyyy-MM-dd'T'HH:mm"
           time: true
-        description: Date and end time. The event drops off the site once this passes.
+        description: Date and end time. The event drops off the site once this passes. Needed even when "Custom time text" is used, though it won't show then.
       - name: timeText
         label: Custom time text
         type: string
@@ -262,11 +262,27 @@ content:
             - { value: medium, label: 'Medium' }
             - { value: large, label: 'Large' }
         description: Rough size, so downtown businesses can plan staffing. Not shown on the site.
+      - name: icon
+        label: Little drawing
+        type: select
+        required: false
+        options:
+          values:
+            - { value: cocoa, label: 'Hot cocoa mug' }
+            - { value: santa, label: 'Santa hat' }
+            - { value: train, label: 'Train' }
+            - { value: gift, label: 'Gift' }
+            - { value: letter, label: 'Letter' }
+            - { value: camera, label: 'Camera' }
+            - { value: breakfast, label: 'Pancakes' }
+            - { value: wreath, label: 'Wreath' }
+            - { value: tree, label: 'Tree' }
+        description: Optional. A small gold drawing shown above the event name.
       - name: description
         label: Short description
         type: text
-        required: true
-        description: One or two sentences for the public listing.
+        required: false
+        description: Optional. Only add one if it says more than the event name already does.
       - name: link
         label: More info link
         type: string
@@ -274,7 +290,12 @@ content:
         pattern:
           regex: '^https?://.+'
           message: 'Enter a full web address starting with https://'
-        description: Optional. A ticket page, registration form, or Facebook event. Shows a "More details" button.
+        description: Optional. A ticket page, registration form, or Facebook event. Shows a button.
+      - name: buttonText
+        label: Button text
+        type: string
+        required: false
+        description: Optional. With a link, this labels the button (for example "Get tickets"; the default is "More details"). With no link, it shows as a placeholder that can't be clicked yet, for example "Tickets coming soon".
       - name: businessTips
         label: Tips for businesses
         type: text

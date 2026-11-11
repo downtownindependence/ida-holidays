@@ -6,9 +6,11 @@ interface Props {
   tone?: 'plain' | 'panel';
   /** Let the content run wider, for the side-by-side event columns. */
   wide?: boolean;
+  /** Draw a thin cream frame with the heading set into its top line, like the flyer. */
+  framed?: boolean;
 }
 
-const { id, title, eyebrow, tone = 'plain', wide = false } = Astro.props;
+const { id, title, eyebrow, tone = 'plain', wide = false, framed = false } = Astro.props;
 const headingId = title ? `${id}-heading` : undefined;
 ---
 
@@ -17,7 +19,13 @@ const headingId = title ? `${id}-heading` : undefined;
   class:list={['section', tone === 'panel' && 'section--panel']}
   aria-labelledby={headingId}
 >
-  <div class:list={['section__inner', wide && 'section__inner--wide']}>
+  <div
+    class:list={[
+      'section__inner',
+      wide && 'section__inner--wide',
+      framed && 'section__inner--framed',
+    ]}
+  >
     {
       title && (
         <header class="section__header">
@@ -53,6 +61,35 @@ const headingId = title ? `${id}-heading` : undefined;
   .section__header {
     margin-bottom: var(--space-8);
     text-align: center;
+  }
+
+  /* The flyer's thin cream frame around the events, with the heading sitting
+   * in a gap in the top line. */
+  .section__inner--framed {
+    border: 1.5px solid var(--color-frame);
+    padding: 0 var(--space-4) var(--space-10);
+  }
+
+  .section__inner--framed > .section__header {
+    width: fit-content;
+    max-width: calc(100% - var(--space-8));
+    /* The negative bottom margin takes back the space left by pulling the
+     * heading up onto the line. */
+    margin: 0 auto calc(var(--space-6) - 2.25rem);
+    padding-inline: var(--space-4);
+    background: var(--color-bg);
+    /* Pull the heading up so the frame's top line runs through its middle. */
+    translate: 0 -50%;
+  }
+
+  .section--panel .section__inner--framed > .section__header {
+    background: var(--color-bg-deep);
+  }
+
+  @media (min-width: 40rem) {
+    .section__inner--framed {
+      padding-inline: var(--space-8);
+    }
   }
 
   .section__eyebrow {

@@ -6,6 +6,6 @@ location: Elks Club
 cost: FREE
 category: IDA
 crowd: medium
-description: A holiday bazaar at the Elks Club.
+icon: gift
 visible: true
 ---

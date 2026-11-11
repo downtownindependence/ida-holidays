@@ -1,22 +1,25 @@
 ---
 /*
- * Events laid out like the flyer: one column per day, each with a cream sun
- * circle for the date and that day's events underneath, separated by small
- * gold sparkles. One column on a phone, side by side on a wider screen.
+ * Events laid out like the flyer: each day gets a cream sun circle for the
+ * date with that day's events underneath, separated by small gold sparkles.
+ *
+ *   Phone          One day after another, with a sparkle on the line between days
+ *   Half screen    One row per day: date circle on the left, events on the right
+ *   Full screen    Days side by side in columns, like the flyer
  */
 import type { EventDay } from '../lib/events';
 import { clockParts, splitLinkingWords } from '../lib/format';
 import SunDate from './SunDate.astro';
 import Sparkle from './Sparkle.astro';
+import EventIcon from './EventIcon.astro';
 
 interface Props {
   days: EventDay[];
 }
 
 const { days } = Astro.props;
-// Side by side on a wide screen: up to five days fit in one row (the flyer
-// has four Saturdays, plus the November meeting until it passes). With more
-// than five, rows of four.
+// Full screen: up to five days fit in one row (the flyer has four Saturdays,
+// plus the November meeting until it passes). With more than five, rows of four.
 const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
 ---
 
@@ -28,18 +31,40 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
     </p>
   ) : (
     <ol class="days" style={`--wide-columns: ${wideColumns}`} data-columns={wideColumns}>
-      {days.map((day) => (
+      {days.map((day, dayIndex) => (
         <li class="day">
-          <SunDate date={day.date} />
+          {dayIndex > 0 && (
+            <span class="day__divider" aria-hidden="true">
+              <Sparkle />
+            </span>
+          )}
+          <div class="day__date">
+            <SunDate date={day.date} />
+          </div>
           <ol class="day__events">
             {day.events.map((entry, index) => {
-              const { name, location, cost, highlight, timeText, description, link } =
-                entry.data;
+              const {
+                name,
+                location,
+                cost,
+                highlight,
+                timeText,
+                description,
+                link,
+                buttonText,
+                icon,
+              } = entry.data;
               const start = clockParts(entry.data.start);
               const end = clockParts(entry.data.end);
+              // Keep the location's last word with "• FREE" so the cost never
+              // wraps onto a line of its own.
+              const locationWords = location.trim().split(/\s+/);
+              const locationLast = locationWords.pop() ?? '';
+              const locationStart = locationWords.join(' ');
               return (
                 <li class="event">
                   {index > 0 && <Sparkle />}
+                  {icon && <EventIcon name={icon} />}
                   <h3 class="event__name">
                     {splitLinkingWords(name, ['and']).map((piece) =>
                       piece.script ? (
@@ -51,16 +76,18 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
                   </h3>
                   {highlight && <p class="event__highlight">{highlight}</p>}
                   <p class="event__place">
-                    {location}
-                    {cost && (
+                    {cost ? (
                       <>
-                        {' '}
+                        {locationStart && `${locationStart} `}
                         <span class="event__cost">
-                          <span aria-hidden="true">• </span>
+                          {locationLast}
+                          <span aria-hidden="true"> • </span>
                           <span class="visually-hidden">, </span>
                           {cost}
                         </span>
                       </>
+                    ) : (
+                      location
                     )}
                   </p>
                   <p class="event__time">
@@ -83,16 +110,22 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
                     )}
                   </p>
                   {description && <p class="event__description">{description}</p>}
-                  {link && (
+                  {link ? (
                     <p class="event__action">
                       <a
                         class="button"
                         href={link}
-                        aria-label={`More details about ${name}`}
+                        aria-label={`${buttonText ?? 'More details'}: ${name}`}
                       >
-                        More details
+                        {buttonText ?? 'More details'}
                       </a>
                     </p>
+                  ) : (
+                    buttonText && (
+                      <p class="event__action">
+                        <span class="button button--placeholder">{buttonText}</span>
+                      </p>
+                    )
                   )}
                 </li>
               );
@@ -118,49 +151,42 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
   .days {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-12) 0;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  /* ---- Phone: one day after another ---- */
   .day {
+    position: relative;
     display: grid;
     align-content: start;
     gap: var(--space-5);
-    padding-inline: var(--space-4);
+    padding-block: var(--space-10);
     text-align: center;
   }
 
-  /* Two columns on a tablet, then everything in one row on a wide screen.
-   * Thin dividers sit between side-by-side days, like the flyer's columns,
-   * but never on the first day of a row. */
-  @media (min-width: 40rem) {
-    .days {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .day:nth-child(2n) {
-      border-left: var(--border-hairline) solid var(--color-rule-strong);
-    }
+  .day:first-child {
+    padding-top: 0;
   }
 
-  @media (min-width: 64rem) {
-    .days {
-      grid-template-columns: repeat(var(--wide-columns), minmax(0, 1fr));
-    }
+  .day + .day {
+    border-top: var(--border-hairline) solid var(--color-rule-strong);
+  }
 
-    .day:nth-child(2n) {
-      border-left: 0;
-    }
+  /* A gold sparkle sitting on the line between two days. */
+  .day__divider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    padding-inline: var(--space-3);
+    background: var(--color-bg);
+    translate: -50% -50%;
+  }
 
-    .day + .day {
-      border-left: var(--border-hairline) solid var(--color-rule-strong);
-    }
-
-    .days[data-columns='4'] .day:nth-child(4n + 1) {
-      border-left: 0;
-    }
+  .day__divider :global(.sparkle) {
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
   .day__events {
@@ -173,11 +199,64 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
 
   .event {
     display: grid;
+    justify-items: center;
     gap: var(--space-2);
   }
 
   .event > :global(.sparkle) {
     margin-bottom: var(--space-3);
+  }
+
+  .event > :global(.icon) {
+    margin-bottom: var(--space-1);
+  }
+
+  /* ---- Half screen: one row per day, date on the left ---- */
+  @media (min-width: 40rem) and (max-width: 63.99rem) {
+    .day {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      align-items: start;
+      gap: var(--space-8);
+      text-align: left;
+    }
+
+    .day__divider {
+      left: 4.5rem;
+    }
+
+    .event {
+      justify-items: start;
+    }
+
+    .event > :global(.sparkle),
+    .event > :global(.icon) {
+      margin-inline: 0;
+    }
+  }
+
+  /* ---- Full screen: days side by side, like the flyer's columns ---- */
+  @media (min-width: 64rem) {
+    .days {
+      grid-template-columns: repeat(var(--wide-columns), minmax(0, 1fr));
+      row-gap: var(--space-12);
+    }
+
+    .day {
+      padding: 0 var(--space-4);
+    }
+
+    .day + .day {
+      border-top: 0;
+      border-left: var(--border-hairline) solid var(--color-rule-strong);
+    }
+
+    .days[data-columns='4'] .day:nth-child(4n + 1) {
+      border-left: 0;
+    }
+
+    .day__divider {
+      display: none;
+    }
   }
 
   .event__name {

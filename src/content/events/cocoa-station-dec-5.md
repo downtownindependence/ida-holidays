@@ -6,6 +6,6 @@ location: Riverfront Park
 cost: FREE
 category: IDA
 crowd: medium
-description: Warm up with hot cocoa at Riverfront Park.
+icon: cocoa
 visible: true
 ---

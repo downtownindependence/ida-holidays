@@ -1,0 +1,113 @@
+---
+/*
+ * The red banner right under the headline, like the flyer's "Vote for your
+ * favorite window display!" box. Most visitors arrive from the flyer's QR
+ * code, so the way to vote is the first thing they see. What it says follows
+ * the "Window contest stage" setting in Pages CMS.
+ */
+import type { HolidaySettings } from '../lib/settings';
+import { formatPlainDate } from '../lib/format';
+
+interface Props {
+  settings: HolidaySettings;
+}
+
+const { contestStage, votingOpens, votingDeadline, winnersAnnounced, participatingBusinesses } =
+  Astro.props.settings;
+
+const opensText = votingOpens ? formatPlainDate(votingOpens, 'weekday') : null;
+const deadlineText = votingDeadline ? formatPlainDate(votingDeadline, 'weekday') : null;
+const announcedText = winnersAnnounced ? formatPlainDate(winnersAnnounced, 'monthDay') : null;
+
+const content = {
+  'coming-soon': {
+    note: opensText ? `Voting opens ${opensText}` : 'Voting opens soon',
+    button: 'How it works',
+    href: '#window-contest',
+  },
+  'voting-open': {
+    note: deadlineText ? `Pick up to three. Vote by ${deadlineText}.` : 'Pick up to three.',
+    button: 'Vote now',
+    // Straight to the business cards when there are any.
+    href: participatingBusinesses.length > 0 ? '#ballot' : '#window-contest',
+  },
+  'voting-closed': {
+    note: announcedText
+      ? `Voting is closed. Winners will be announced the week of ${announcedText}.`
+      : 'Voting is closed. Winners will be announced soon.',
+    button: 'About the contest',
+    href: '#window-contest',
+  },
+  winners: {
+    note: 'The votes are in!',
+    button: 'See the winners',
+    href: '#window-contest',
+  },
+}[contestStage];
+---
+
+<aside class="banner" aria-label="Holiday Window Display Contest">
+  <div class="banner__inner">
+    <p class="banner__title">
+      {contestStage === 'winners' ? 'Meet the winning windows!' : 'Vote for your favorite holiday window display!'}
+    </p>
+    <p class="banner__note">{content.note}</p>
+    <p class="banner__action">
+      <a class="button banner__button" href={content.href}>{content.button}</a>
+    </p>
+  </div>
+</aside>
+
+<style>
+  .banner {
+    padding-block: var(--space-8);
+    padding-inline: var(--page-gutter);
+    background: var(--color-accent-secondary);
+    color: var(--color-accent-secondary-contrast);
+  }
+
+  .banner__inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    max-width: var(--content-max);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .banner__title {
+    margin: 0;
+    font-family: var(--font-slanted);
+    font-style: italic;
+    font-weight: var(--weight-light);
+    font-size: var(--text-2xl);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .banner__note {
+    margin: 0;
+    font-family: var(--font-label);
+    font-weight: var(--weight-medium);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .banner__action {
+    margin: var(--space-2) 0 0;
+  }
+
+  /* Cream on red, so it stands out from the red box. */
+  .banner__button {
+    background: var(--color-sun);
+    color: var(--color-accent-secondary);
+  }
+
+  .banner__button:hover {
+    background: var(--color-heading);
+    color: var(--color-accent-secondary);
+  }
+</style>

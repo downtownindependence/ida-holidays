@@ -5,8 +5,9 @@ end: 2026-12-19T14:00
 timeText: 9AM or 12PM
 location: Independence Hotel
 cost: $10
+buttonText: Tickets coming soon
 category: IDA
 crowd: medium
-description: Breakfast with Buddy the Elf. Two seatings, at 9 AM or 12 PM. Tickets are $10.
+icon: breakfast
 visible: true
 ---

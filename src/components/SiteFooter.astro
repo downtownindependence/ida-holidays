@@ -1,4 +1,13 @@
 <footer class="footer">
+  <a class="footer__logo" href="https://downtownindependence.com">
+    <img
+      src="/images/ida-logo.webp"
+      alt="Independence Downtown Association"
+      width="480"
+      height="421"
+      loading="lazy"
+    />
+  </a>
   <p>
     Brought to you by the <strong>City of Independence</strong> &amp;{' '}
     <a href="https://downtownindependence.com"
@@ -9,17 +18,31 @@
 
 <style>
   .footer {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-5);
     padding-inline: var(--page-gutter);
-    padding-block: var(--space-10)
+    padding-block: var(--space-12)
       calc(var(--space-10) + env(safe-area-inset-bottom));
     border-top: var(--border-hairline) solid var(--color-rule);
     text-align: center;
   }
 
+  .footer__logo {
+    display: block;
+    width: 8rem;
+  }
+
+  .footer__logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
   /* Matches the flyer's footer line: small, spaced-out capitals. */
   .footer p {
     max-width: 40rem;
-    margin: 0 auto;
+    margin: 0;
     font-family: var(--font-body);
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-label);
@@ -32,11 +55,11 @@
     color: var(--color-heading);
   }
 
-  .footer a {
+  .footer p a {
     text-decoration-color: var(--color-link-underline);
   }
 
-  .footer a strong {
+  .footer p a strong {
     color: inherit;
   }
 </style>
