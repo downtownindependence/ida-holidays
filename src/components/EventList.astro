@@ -17,13 +17,17 @@ interface Props {
   days: EventDay[];
   /** Show only the dates, each with "Announcing soon", while the schedule is being finalized. */
   announcing?: boolean;
+  /** Optional line shown above the dates, from Pages CMS. */
+  note?: string;
 }
 
-const { days, announcing = false } = Astro.props;
+const { days, announcing = false, note } = Astro.props;
 // Full screen: up to five days fit in one row (the flyer has four Saturdays,
 // plus the November meeting until it passes). With more than five, rows of four.
 const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
 ---
+
+{note && <p class="note">{note}</p>}
 
 {
   days.length === 0 ? (
@@ -139,6 +143,17 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
 }
 
 <style>
+  /* The note under "Upcoming Saturdays", like "The full lineup is still
+   * being finalized." */
+  .note {
+    max-width: 34rem;
+    margin: 0 auto var(--space-10);
+    font-size: var(--text-base);
+    text-align: center;
+    text-wrap: balance;
+    color: var(--color-text);
+  }
+
   .empty {
     margin: 0;
     padding: var(--space-6);

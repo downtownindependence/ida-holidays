@@ -54,6 +54,8 @@ const settingsSchema = z.object({
   // Off: the events section shows each Saturday's date with "Announcing soon"
   // instead of the event details, while the schedule is being finalized.
   showEventDetails: z.boolean().default(true),
+  // A short note under "Upcoming Saturdays". Blank hides it.
+  scheduleNote: optionalText,
   businessSignupUrl: optionalText,
   signupDeadline: optionalText,
   votingOpens: optionalText,

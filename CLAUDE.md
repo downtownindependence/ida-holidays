@@ -49,6 +49,7 @@ These REPLACE the older four-category contest that is currently on the live page
   - Sat Dec 19: YMCA Breakfast with Buddy the Elf, Independence Hotel, 9 to 11 AM, tickets required ("Tickets and info on the YMCA website and social media."). YMCA Cocoa Station and Holiday Photo Booth (FREE Candy Cane Day), Main Street fountain, 11 AM to 3 PM.
 - The Dec 5 Holiday Bazaar and the earlier flyer-based events are gone. Amy's request said to leave the Nov 16 Community Meeting as is; it had already been removed at Sydney's request on Nov 11, so it stays removed.
 - "Show event details" (CMS switch, Nov 12): off shows each Saturday's date with "Announcing soon" instead of the events. Sydney chose (Nov 12) to keep the events showing with the switch ON; flip it off in the CMS if the schedule needs to be hidden again. The announcing-soon branch is an old preview snapshot (https://announcing-soon.ida-holidays.pages.dev) with the switch off; it does not update with main.
+- "Note under Upcoming Saturdays" (CMS text field, Nov 12): currently says the full lineup is still being finalized. Blank it out in the CMS once the schedule is final.
 - Category and crowd size are guesses (Kickoff is IDA; the others are Outside organizers; crowd mostly medium, Kickoff and Santa Train large). Neither shows on the site.
 - Drawings: tree (Kickoff), raised glasses (Pub Crawl), cocoa mug, train, music note (Caroling), Santa hat (Dec 12 cocoa/photo booth), gift (Santa Experience), pancakes (Breakfast), camera (Dec 19 cocoa/photo booth).
 

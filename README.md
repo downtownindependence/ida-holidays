@@ -81,6 +81,10 @@ in `America/Los_Angeles` no matter where the visitor is.
 
 ## Events
 
+"Note under Upcoming Saturdays" in Holiday Page Settings is an optional line
+shown right under the heading (for example, that the lineup is still being
+finalized). Leave it blank to hide it.
+
 "Show event details" in Holiday Page Settings is an on/off switch. Turned
 off, the events section keeps each Saturday's date circle but shows
 "Announcing soon" instead of the events, for while the schedule is being

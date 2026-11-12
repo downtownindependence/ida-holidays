@@ -28,6 +28,12 @@ content:
         default: true
         description: Turn this off while the schedule is being finalized. The page then shows each Saturday's date with "Announcing soon" instead of the events. The events stay saved, and turning this back on brings them all back.
 
+      - name: scheduleNote
+        label: Note under Upcoming Saturdays
+        type: text
+        required: false
+        description: A short line shown right under the "Upcoming Saturdays" heading, for example to say the lineup is still being finalized. Leave it blank to hide it.
+
       - name: businessSignupUrl
         label: Business sign-up form link (pre-filled)
         type: string
