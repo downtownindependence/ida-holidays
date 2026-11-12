@@ -51,6 +51,9 @@ const volunteerCalloutSchema = z
 
 const settingsSchema = z.object({
   contestStage: z.enum(CONTEST_STAGES).default('coming-soon'),
+  // Off: the events section shows each Saturday's date with "Announcing soon"
+  // instead of the event details, while the schedule is being finalized.
+  showEventDetails: z.boolean().default(true),
   businessSignupUrl: optionalText,
   signupDeadline: optionalText,
   votingOpens: optionalText,

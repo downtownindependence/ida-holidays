@@ -15,9 +15,11 @@ import EventIcon from './EventIcon.astro';
 
 interface Props {
   days: EventDay[];
+  /** Show only the dates, each with "Announcing soon", while the schedule is being finalized. */
+  announcing?: boolean;
 }
 
-const { days } = Astro.props;
+const { days, announcing = false } = Astro.props;
 // Full screen: up to five days fit in one row (the flyer has four Saturdays,
 // plus the November meeting until it passes). With more than five, rows of four.
 const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
@@ -41,6 +43,9 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
           <div class="day__date">
             <SunDate date={day.date} />
           </div>
+          {announcing ? (
+            <p class="day__soon">Announcing soon</p>
+          ) : (
           <ol class="day__events">
             {day.events.map((entry, index) => {
               const {
@@ -126,6 +131,7 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
               );
             })}
           </ol>
+          )}
         </li>
       ))}
     </ol>
@@ -184,6 +190,19 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
     height: 1.75rem;
   }
 
+  /* "ANNOUNCING SOON" under each date, in the flyer's slanted type. */
+  .day__soon {
+    margin: 0;
+    font-family: var(--font-slanted);
+    font-style: italic;
+    font-weight: var(--weight-light);
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-label);
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
   .day__events {
     display: grid;
     gap: var(--space-4);
@@ -221,6 +240,11 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
 
     .event {
       justify-items: start;
+    }
+
+    .day__soon {
+      align-self: center;
+      text-align: left;
     }
 
     .event > :global(.sparkle),

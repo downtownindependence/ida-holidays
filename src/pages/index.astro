@@ -50,7 +50,7 @@ const votingFirst = settings.contestStage === 'voting-open';
     }
 
     <Section id="events" eyebrow="Mark your calendar" title="Upcoming Saturdays" wide framed>
-      <EventList days={eventDays} />
+      <EventList days={eventDays} announcing={!settings.showEventDetails} />
     </Section>
 
     {

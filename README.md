@@ -81,6 +81,12 @@ in `America/Los_Angeles` no matter where the visitor is.
 
 ## Events
 
+"Show event details" in Holiday Page Settings is an on/off switch. Turned
+off, the events section keeps each Saturday's date circle but shows
+"Announcing soon" instead of the events, for while the schedule is being
+finalized. The events stay saved in Pages CMS; turning the switch back on
+brings them all back.
+
 Events on the same day are grouped under one cream date circle, like the
 flyer. A few optional fields in Pages CMS match how the flyer shows things:
 

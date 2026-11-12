@@ -22,6 +22,12 @@ content:
             - { value: voting-closed, label: 'Voting closed' }
             - { value: winners, label: 'Winners' }
 
+      - name: showEventDetails
+        label: Show event details
+        type: boolean
+        default: true
+        description: Turn this off while the schedule is being finalized. The page then shows each Saturday's date with "Announcing soon" instead of the events. The events stay saved, and turning this back on brings them all back.
+
       - name: businessSignupUrl
         label: Business sign-up form link (pre-filled)
         type: string
