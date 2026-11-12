@@ -140,10 +140,16 @@ Nothing switches on its own.
 | --- | --- |
 | Coming soon | "Voting opens Saturday, November 28", the red business box (prize amounts and the sign-up form), and the list of entered windows |
 | Voting open | The deadline and the ballot: a card for each business with a "Pick this window" button, then email and submit |
-| Voting closed | "Winners will be announced the week of ..." from the CMS date |
+| Voting closed | "Winners will be announced the first week of January" from the CMS text |
 | Winners | 1st, 2nd and 3rd place with prizes, and photos when provided |
 
-Prize amounts ($150, $75, $50) are set in `src/lib/settings.ts`.
+Prize amounts ($150, $100, $50) are set in `src/lib/settings.ts`.
+
+The contest and sign-up sections both show three key lines built from Pages
+CMS: "Voting runs Nov 28 through Dec 31." (Voting opens, Last day to vote),
+"Winners announced the first week of January." (Winners announced, a text
+field) and "Decorations stay up through January 1." (Decorations stay up
+through).
 
 ### Forms built into the page
 

@@ -109,6 +109,27 @@ const { name } = Astro.props;
       </>
     )
   }
+  {
+    name === 'cheers' && (
+      <>
+        <path d="M9 9h11l-1 9a4.5 4.5 0 0 1-9 0z" transform="rotate(-12 15 20)" />
+        <path d="M14.5 22.5v14.5M10 37h9" transform="rotate(-12 15 20)" />
+        <path d="M28 9h11l-1 9a4.5 4.5 0 0 1-9 0z" transform="rotate(12 33 20)" />
+        <path d="M33.5 22.5v14.5M29 37h9" transform="rotate(12 33 20)" />
+        <path d="M24 4v3M20 5.5l1.5 2M28 5.5l-1.5 2" />
+      </>
+    )
+  }
+  {
+    name === 'music' && (
+      <>
+        <path d="M18 34V12l20-4v22" />
+        <path d="M18 18l20-4" />
+        <ellipse cx="13.5" cy="34" rx="4.5" ry="3.5" />
+        <ellipse cx="33.5" cy="30" rx="4.5" ry="3.5" />
+      </>
+    )
+  }
 </svg>
 
 <style>

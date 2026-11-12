@@ -30,9 +30,10 @@ const { datelineTop, datelineFrom, datelineTo, compact = false } = Astro.props;
     </a>
     <p class="hero__eyebrow">Downtown Independence</p>
     <h1 class="hero__title">
+      <span class="visually-hidden">Season of Lights</span>
       <img
         src="/images/season-of-lights.webp"
-        alt="Season of Lights"
+        alt=""
         width="1200"
         height="645"
         fetchpriority="high"
@@ -99,6 +100,17 @@ const { datelineTop, datelineFrom, datelineTo, compact = false } = Astro.props;
 
   .hero__title {
     margin: 0;
+  }
+
+  /* The headline's real text, for search engines, screen readers and copying.
+   * Sighted visitors see Courtney's lettering instead. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .hero__title img {

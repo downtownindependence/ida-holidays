@@ -17,7 +17,6 @@ const { contestStage, votingOpens, votingDeadline, winnersAnnounced, participati
 
 const opensText = votingOpens ? formatPlainDate(votingOpens, 'weekday') : null;
 const deadlineText = votingDeadline ? formatPlainDate(votingDeadline, 'weekday') : null;
-const announcedText = winnersAnnounced ? formatPlainDate(winnersAnnounced, 'monthDay') : null;
 
 const content = {
   'coming-soon': {
@@ -32,8 +31,8 @@ const content = {
     href: participatingBusinesses.length > 0 ? '#ballot' : '#window-contest',
   },
   'voting-closed': {
-    note: announcedText
-      ? `Voting is closed. Winners will be announced the week of ${announcedText}.`
+    note: winnersAnnounced
+      ? `Voting is closed. Winners will be announced the ${winnersAnnounced}.`
       : 'Voting is closed. Winners will be announced soon.',
     button: 'About the contest',
     href: '#window-contest',

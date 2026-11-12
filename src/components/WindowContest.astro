@@ -29,6 +29,7 @@ const {
   votingOpens,
   votingDeadline,
   winnersAnnounced,
+  decorationsThrough,
   votingFormUrl,
   participatingBusinesses,
   winners,
@@ -39,7 +40,17 @@ const businessNames = participatingBusinesses.map((business) => business.name);
 const opensText = votingOpens ? formatPlainDate(votingOpens, 'weekday') : null;
 const deadlineText = votingDeadline ? formatPlainDate(votingDeadline, 'weekday') : null;
 const signupText = signupDeadline ? formatPlainDate(signupDeadline, 'weekday') : null;
-const announcedText = winnersAnnounced ? formatPlainDate(winnersAnnounced, 'monthDay') : null;
+// "Voting runs Nov 28 through Dec 31. Winners announced the first week of
+// January. Decorations stay up through January 1." All three come from Pages CMS.
+const runsText =
+  votingOpens && votingDeadline
+    ? `Voting runs ${formatPlainDate(votingOpens, 'short')} through ${formatPlainDate(votingDeadline, 'short')}.`
+    : null;
+const announcedLine = winnersAnnounced ? `Winners announced the ${winnersAnnounced}.` : null;
+const decorationsLine = decorationsThrough
+  ? `Decorations stay up through ${formatPlainDate(decorationsThrough, 'monthDay')}.`
+  : null;
+const keyDates = [runsText, announcedLine, decorationsLine].filter(Boolean);
 const sortedWinners = [...winners].sort((a, b) => a.place - b.place);
 const placeNames = ['1st place', '2nd place', '3rd place'];
 const isVoting = contestStage === 'voting-open';
@@ -64,6 +75,16 @@ const signupConfig = parseSignupConfig(businessSignupUrl);
     The three windows with the most votes win cash prizes for the business and
     a shout-out in the IDA newsletter.
   </p>
+
+  {
+    keyDates.length > 0 && contestStage !== 'winners' && (
+      <ul class="dates" aria-label="Key dates">
+        {keyDates.map((line) => (
+          <li>{line}</li>
+        ))}
+      </ul>
+    )
+  }
 
   {
     contestStage === 'coming-soon' && (
@@ -105,6 +126,7 @@ const signupConfig = parseSignupConfig(businessSignupUrl);
             </>
           )}
         </p>
+        {keyDates.length > 0 && <p class="signup__text signup__dates">{keyDates.join(' ')}</p>}
         {signupConfig ? (
           <SignupForm config={signupConfig} opensText={opensText} />
         ) : businessSignupUrl ? (
@@ -154,8 +176,8 @@ const signupConfig = parseSignupConfig(businessSignupUrl);
       <div class="stage">
         <p class="stage__headline">Voting is closed</p>
         <p class="stage__text">
-          {announcedText
-            ? `Thank you for voting! Winners will be announced the week of ${announcedText}.`
+          {winnersAnnounced
+            ? `Thank you for voting! Winners will be announced the ${winnersAnnounced}.`
             : 'Thank you for voting! Winners will be announced soon.'}
         </p>
       </div>
@@ -313,6 +335,26 @@ const signupConfig = parseSignupConfig(businessSignupUrl);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+  }
+
+  /* The key dates, as a short centered list. */
+  .dates {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  .signup__dates {
+    font-weight: var(--weight-semibold);
   }
 
   .stage {

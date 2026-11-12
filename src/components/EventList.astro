@@ -68,7 +68,7 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
                   <h3 class="event__name">
                     {splitLinkingWords(name, ['and']).map((piece) =>
                       piece.script ? (
-                        <span class="event__and">{piece.text.trim()}</span>
+                        <span class="event__and">{piece.text}</span>
                       ) : (
                         <span>{piece.text}</span>
                       ),
@@ -79,12 +79,7 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
                     {cost ? (
                       <>
                         {locationStart && `${locationStart} `}
-                        <span class="event__cost">
-                          {locationLast}
-                          <span aria-hidden="true"> • </span>
-                          <span class="visually-hidden">, </span>
-                          {cost}
-                        </span>
+                        <span class="event__cost">{`${locationLast} • ${cost}`}</span>
                       </>
                     ) : (
                       location

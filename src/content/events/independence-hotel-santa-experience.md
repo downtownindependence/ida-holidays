@@ -1,11 +1,11 @@
 ---
-name: Meet Santa!
+name: Independence Hotel Santa Experience
 start: 2026-12-12T16:00
-end: 2026-12-12T18:00
+end: 2026-12-12T19:00
 location: Independence Hotel
 cost: FREE
-category: IDA
+category: Outside
 crowd: medium
-icon: santa
+icon: gift
 visible: true
 ---

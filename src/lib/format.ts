@@ -21,6 +21,8 @@ const PLAIN_DATE_STYLES = {
   weekday: { weekday: 'long', month: 'long', day: 'numeric' },
   /** "December 28" */
   monthDay: { month: 'long', day: 'numeric' },
+  /** "Dec 31" */
+  short: { month: 'short', day: 'numeric' },
 } as const satisfies Record<string, Intl.DateTimeFormatOptions>;
 
 /** Format a plain "YYYY-MM-DD" string from Pages CMS. */

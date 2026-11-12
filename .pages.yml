@@ -52,15 +52,21 @@ content:
         required: false
         options:
           format: 'yyyy-MM-dd'
-        description: Shown on the page while voting is open.
+        description: Shown as "Voting runs Nov 28 through Dec 31" in the contest and sign-up sections, and as the deadline while voting is open.
 
       - name: winnersAnnounced
-        label: Winners announced the week of
+        label: Winners announced
+        type: string
+        required: false
+        description: Finishes the sentence "Winners announced the ...", for example "first week of January".
+
+      - name: decorationsThrough
+        label: Decorations stay up through
         type: date
         required: false
         options:
           format: 'yyyy-MM-dd'
-        description: Shown as "Winners will be announced the week of December 28" once voting is closed.
+        description: Shown as "Decorations stay up through January 1." in the contest and sign-up sections.
 
       - name: votingFormUrl
         label: Voting form link (pre-filled)
@@ -147,7 +153,7 @@ content:
             options:
               values:
                 - { value: '1', label: '1st place ($150)' }
-                - { value: '2', label: '2nd place ($75)' }
+                - { value: '2', label: '2nd place ($100)' }
                 - { value: '3', label: '3rd place ($50)' }
           - name: business
             label: Winning business
@@ -277,6 +283,8 @@ content:
             - { value: breakfast, label: 'Pancakes' }
             - { value: wreath, label: 'Wreath' }
             - { value: tree, label: 'Tree' }
+            - { value: cheers, label: 'Raised glasses' }
+            - { value: music, label: 'Music note' }
         description: Optional. A small gold drawing shown above the event name.
       - name: description
         label: Short description

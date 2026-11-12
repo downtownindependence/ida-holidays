@@ -1,10 +1,10 @@
 ---
-name: Cocoa Station
+name: YMCA Cheer Cocoa Station
 start: 2026-12-05T11:00
 end: 2026-12-05T15:00
-location: Riverfront Park
+location: Main Street fountain
 cost: FREE
-category: IDA
+category: Outside
 crowd: medium
 icon: cocoa
 visible: true

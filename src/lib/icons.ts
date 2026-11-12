@@ -13,6 +13,8 @@ export const EVENT_ICONS = [
   'breakfast',
   'wreath',
   'tree',
+  'cheers',
+  'music',
 ] as const;
 
 export type EventIconName = (typeof EVENT_ICONS)[number];

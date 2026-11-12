@@ -11,7 +11,7 @@ export const CONTEST_STAGES = [
 export type ContestStage = (typeof CONTEST_STAGES)[number];
 
 /** Prize for each finishing place. Change here if the board changes them. */
-export const PRIZES = ['$150', '$75', '$50'] as const;
+export const PRIZES = ['$150', '$100', '$50'] as const;
 
 const optionalText = z
   .string()
@@ -56,6 +56,7 @@ const settingsSchema = z.object({
   votingOpens: optionalText,
   votingDeadline: optionalText,
   winnersAnnounced: optionalText,
+  decorationsThrough: optionalText,
   votingFormUrl: optionalText,
   participatingBusinesses: z.array(businessSchema).default([]),
   santaPhotoSpots: z.array(santaSpotSchema).default([]),
