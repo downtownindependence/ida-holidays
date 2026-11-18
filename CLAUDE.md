@@ -43,7 +43,7 @@ These REPLACE the older four-category contest that is currently on the live page
 ## Events
 - The Nov 16 Community Meeting and Wreath Stringing Party was removed Nov 11 at Sydney's request (not part of Season of Lights, and the only non-Saturday). Only Saturday events belong on this site.
 - Courtney's FINAL printed poster (Nov 18) is now the source of truth for event wording, because it is what people are holding. Amy's Nov 12 schedule is the fallback for anything the poster does not say. Sydney asked on Nov 18 to match the poster exactly. All free unless noted:
-  - Sat Nov 28 (Season of Lights Kickoff!): Season of Lights Kickoff Celebration, Independence Hotel, 4 to 6 PM. Imbibing the Holiday Spirits Pub Crawl, The Valkyrie, 6:30 to 9 PM, hosted by the Heritage Museum Society, music with Nathan Junior. (Venue changed Nov 18 from "Downtown Independence" to "The Valkyrie" to match the poster. WATCH THIS ONE: a pub crawl normally moves between bars, and Amy's Nov 12 schedule said Downtown Independence with the music at Valkyrie. If Amy confirms it really does move around, put the venue back.)
+  - Sat Nov 28 (Season of Lights Kickoff!): Season of Lights Kickoff Celebration, Independence Hotel, 4 to 6 PM. Imbibing the Holiday Spirits Pub Crawl, The Valkyrie, 6:30 to 9 PM, hosted by the Heritage Museum Society, music with Nathan Junior. (Venue changed Nov 18 from "Downtown Independence" to "The Valkyrie" to match the poster. SETTLED: Sydney was told a pub crawl normally moves between bars and that Amy's Nov 12 schedule said Downtown Independence, and chose on Nov 18 to go with the poster anyway. Do not change it back without asking her.)
   - Sat Dec 5: YMCA Cheer Cocoa Station, Main Street fountain, 11 AM to 3 PM. Elks Santa Train, Downtown, C Street, 12 to 3 PM. Central's Jazz Ensemble Caroling, Main Street fountain, 2 to 3 PM.
   - Sat Dec 12: YMCA Cheer Cocoa Station and Holiday Photo Booth (FREE Santa Hat Day, music with Nathan Junior), Main Street fountain, 11 AM to 3 PM. Independence Hotel Santa Experience, Independence Hotel, 4 to 7 PM.
   - Sat Dec 19: YMCA Cheer Cocoa Station and Holiday Photo Booth ("Cheer" restored Nov 18 to match the poster and the Dec 12 one). YMCA Breakfast with Buddy the Elf, Independence Hotel, 9 to 11 AM, $10, tickets required ("Tickets and info on the YMCA website and social media."), info link https://theyonline.org with a "Get tickets" button. The $10 and the link came from Courtney's final poster (Nov 18) and were added at Sydney's request; Amy's Nov 12 schedule did not have them. YMCA Cocoa Station and Holiday Photo Booth (FREE Candy Cane Day), Main Street fountain, 11 AM to 3 PM.
@@ -58,7 +58,7 @@ The printed poster was compared line by line against the live site on Nov 18. Al
 - Buddy the Elf now shows $10 (the poster's price; the site had no price at all).
 - Buddy the Elf now links to https://theyonline.org with a "Get tickets" button (the poster says "INFO: THEYONLINE.ORG"; the site had said only "the YMCA website and social media" with no link).
 - The "lineup is still being finalized" note was blanked, since the poster is printed and final.
-- Pub Crawl venue is now "The Valkyrie" (see the warning in Events above).
+- Pub Crawl venue is now "The Valkyrie". Sydney confirmed Nov 18 to keep the poster's wording even though a crawl usually moves between bars.
 - Caroling is now "Central's Jazz Ensemble Caroling" (dropped "Mainstreet").
 - Elks Santa Train is now "Downtown, C Street".
 - Dec 19 cocoa station is now "YMCA Cheer Cocoa Station and Holiday Photo Booth".
