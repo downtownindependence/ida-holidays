@@ -1,5 +1,5 @@
 ---
-name: Central's Mainstreet Jazz Ensemble Caroling
+name: Central's Jazz Ensemble Caroling
 start: 2026-12-05T14:00
 end: 2026-12-05T15:00
 location: Main Street fountain

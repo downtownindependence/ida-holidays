@@ -1,5 +1,5 @@
 ---
-name: YMCA Cocoa Station and Holiday Photo Booth
+name: YMCA Cheer Cocoa Station and Holiday Photo Booth
 start: 2026-12-19T11:00
 end: 2026-12-19T15:00
 location: Main Street fountain
