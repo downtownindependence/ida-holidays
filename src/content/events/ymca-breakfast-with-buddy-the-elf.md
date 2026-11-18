@@ -3,7 +3,10 @@ name: YMCA Breakfast with Buddy the Elf
 start: 2026-12-19T09:00
 end: 2026-12-19T11:00
 location: Independence Hotel
-cost: Tickets required
+cost: $10
+highlight: Tickets required
+link: https://theyonline.org
+buttonText: Get tickets
 description: Tickets and info on the YMCA website and social media.
 category: Outside
 crowd: medium

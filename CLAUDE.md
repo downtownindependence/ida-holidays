@@ -46,12 +46,20 @@ These REPLACE the older four-category contest that is currently on the live page
   - Sat Nov 28 (Season of Lights Kickoff!): Season of Lights Kickoff Celebration, Independence Hotel, 4 to 6 PM. Imbibing the Holiday Spirits Pub Crawl, Downtown Independence, 6:30 to 9 PM, hosted by the Heritage Museum Society, music with Nathan Junior at Valkyrie.
   - Sat Dec 5: YMCA Cheer Cocoa Station, Main Street fountain, 11 AM to 3 PM. Elks Santa Train, C Street, 12 to 3 PM. Central's Mainstreet Jazz Ensemble Caroling, Main Street fountain, 2 to 3 PM.
   - Sat Dec 12: YMCA Cheer Cocoa Station and Holiday Photo Booth (FREE Santa Hat Day, music with Nathan Junior), Main Street fountain, 11 AM to 3 PM. Independence Hotel Santa Experience, Independence Hotel, 4 to 7 PM.
-  - Sat Dec 19: YMCA Breakfast with Buddy the Elf, Independence Hotel, 9 to 11 AM, tickets required ("Tickets and info on the YMCA website and social media."). YMCA Cocoa Station and Holiday Photo Booth (FREE Candy Cane Day), Main Street fountain, 11 AM to 3 PM.
+  - Sat Dec 19: YMCA Breakfast with Buddy the Elf, Independence Hotel, 9 to 11 AM, $10, tickets required ("Tickets and info on the YMCA website and social media."), info link https://theyonline.org with a "Get tickets" button. The $10 and the link came from Courtney's final poster (Nov 18) and were added at Sydney's request; Amy's Nov 12 schedule did not have them. YMCA Cocoa Station and Holiday Photo Booth (FREE Candy Cane Day), Main Street fountain, 11 AM to 3 PM.
 - The Dec 5 Holiday Bazaar and the earlier flyer-based events are gone. Amy's request said to leave the Nov 16 Community Meeting as is; it had already been removed at Sydney's request on Nov 11, so it stays removed.
 - "Show event details" (CMS switch, Nov 12): off shows each Saturday's date with "Announcing soon" instead of the events. Sydney chose (Nov 12) to keep the events showing with the switch ON; flip it off in the CMS if the schedule needs to be hidden again. The announcing-soon branch is an old preview snapshot (https://announcing-soon.ida-holidays.pages.dev) with the switch off; it does not update with main.
-- "Note under Upcoming Saturdays" (CMS text field, Nov 12): currently says the full lineup is still being finalized. Blank it out in the CMS once the schedule is final.
+- "Note under Upcoming Saturdays" (CMS text field): BLANKED Nov 18, because Courtney's poster is printed and final, so "the full lineup is still being finalized" contradicted what people are holding. Leave it blank unless the schedule actually changes.
 - Category and crowd size are guesses (Kickoff is IDA; the others are Outside organizers; crowd mostly medium, Kickoff and Santa Train large). Neither shows on the site.
 - Drawings: tree (Kickoff), raised glasses (Pub Crawl), cocoa mug, train, music note (Caroling), Santa hat (Dec 12 cocoa/photo booth), gift (Santa Experience), pancakes (Breakfast), camera (Dec 19 cocoa/photo booth).
+
+## Open questions from Courtney's final poster (Nov 18)
+Checked the printed poster against the live site. All nine events match on date, time, venue and free/paid status. Three gaps were fixed Nov 18 ($10 price, theyonline.org link, schedule note blanked). These wording differences are still unresolved, all small, and Sydney has not picked a side:
+- Pub Crawl venue. Poster puts "THE VALKYRIE" in the venue slot. Site says "Downtown Independence" with Valkyrie named in the description as where the music is (Amy's wording). A crawl moves around, so the site may be the more accurate one.
+- Caroling name. Poster: "Central's Jazz Ensemble Caroling". Site: "Central's Mainstreet Jazz Ensemble Caroling" (Amy's wording, has the extra word "Mainstreet").
+- Elks Santa Train location. Poster: "Downtown, C Street". Site: "C Street".
+- Dec 19 cocoa station. Poster calls it "YMCA Cheer Cocoa Station" like the Dec 12 one. Site drops "Cheer" on Dec 19 only, so the two are named inconsistently on the site.
+Also worth knowing: this poster carries NO voting dates, so the older Dec 24 / Dec 19 flyer conflict noted above does not appear on the printed piece. The site's Nov 28 through Dec 31 stands unchallenged.
 
 ## Branding (matches Courtney's flyer; decided Nov 11)
 - Deep green background #013230, gold #e0922a, red-orange #d9533a, cream #f5efe0.
