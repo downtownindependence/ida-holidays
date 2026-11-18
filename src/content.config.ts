@@ -26,6 +26,10 @@ const events = defineCollection({
     cost: z.string().optional(),
     // A short perk shown in slanted type, like "Free Santa hats".
     highlight: z.string().optional(),
+    // Credit lines shown like the flyer: "hosted by" / "music with" in small
+    // red script, then the name in red capitals.
+    hostedBy: z.string().optional(),
+    musicWith: z.string().optional(),
     // Replaces the start and end times on the page when they don't tell the
     // whole story, like "9AM or 12PM" for two seatings.
     timeText: z.string().optional(),

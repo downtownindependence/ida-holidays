@@ -258,6 +258,16 @@ content:
         type: string
         required: false
         description: Optional. A short perk shown in slanted type, for example "Free Santa hats".
+      - name: hostedBy
+        label: Hosted by
+        type: string
+        required: false
+        description: Optional. Shown like the flyer, as a small red "hosted by" with the name in capitals underneath. For example "Heritage Museum Society".
+      - name: musicWith
+        label: Music with
+        type: string
+        required: false
+        description: Optional. Shown as a small red "music with" with the name in capitals underneath. For example "Nathan Junior".
       - name: category
         label: Category
         type: select

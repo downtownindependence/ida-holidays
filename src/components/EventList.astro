@@ -57,6 +57,8 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
                 location,
                 cost,
                 highlight,
+                hostedBy,
+                musicWith,
                 timeText,
                 description,
                 link,
@@ -84,6 +86,18 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
                     )}
                   </h3>
                   {highlight && <p class="event__highlight">{highlight}</p>}
+                  {hostedBy && (
+                    <p class="event__credit">
+                      <span class="event__credit-lead">hosted by </span>
+                      <span class="event__credit-name">{hostedBy}</span>
+                    </p>
+                  )}
+                  {musicWith && (
+                    <p class="event__credit">
+                      <span class="event__credit-lead">music with </span>
+                      <span class="event__credit-name">{musicWith}</span>
+                    </p>
+                  )}
                   <p class="event__place">
                     {cost ? (
                       <>
@@ -306,6 +320,30 @@ const wideColumns = days.length <= 5 ? Math.max(days.length, 1) : 4;
     font-size: 0.8em;
     text-transform: none;
     line-height: 1;
+  }
+
+  /* "hosted by HERITAGE MUSEUM SOCIETY", like the flyer: a small script
+   * lead-in on its own line, then the name in capitals, both in red. */
+  .event__credit {
+    display: grid;
+    justify-items: inherit;
+    margin: 0;
+    line-height: 1.15;
+    color: var(--color-credit);
+  }
+
+  .event__credit-lead {
+    font-family: var(--font-script);
+    font-weight: var(--weight-medium);
+    font-size: var(--text-lg);
+  }
+
+  .event__credit-name {
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
   }
 
   .event__highlight {

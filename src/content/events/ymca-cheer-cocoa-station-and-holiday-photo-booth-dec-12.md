@@ -5,7 +5,7 @@ end: 2026-12-12T15:00
 location: Main Street fountain
 cost: FREE
 highlight: FREE Santa Hat Day
-description: Music with Nathan Junior.
+musicWith: Nathan Junior
 category: Outside
 crowd: medium
 icon: santa

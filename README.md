@@ -104,6 +104,9 @@ flyer. A few optional fields in Pages CMS match how the flyer shows things:
   "Tickets coming soon".
 - **Short description**: optional. Only worth adding when it says more than
   the event name.
+- **Hosted by** and **Music with**: credit lines shown like the poster, a
+  small red script "hosted by" or "music with" with the name in red capitals
+  underneath.
 - **Custom time text**: replaces the start and end times, for example
   "9AM or 12PM" for two seatings. The start and end times are still needed so
   the event sorts and drops off the site at the right time.

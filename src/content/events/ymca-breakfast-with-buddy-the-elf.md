@@ -7,7 +7,7 @@ cost: $10
 highlight: Tickets required
 link: https://theyonline.org
 buttonText: Get tickets
-description: Tickets and info on the YMCA website and social media.
+description: "Tickets and info: theyonline.org"
 category: Outside
 crowd: medium
 icon: breakfast

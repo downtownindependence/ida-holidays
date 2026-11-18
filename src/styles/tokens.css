@@ -69,6 +69,9 @@
   --color-sun-text: var(--brand-red);
   /* The small gold sparkle between events on the same day. */
   --color-sparkle: var(--brand-gold);
+  /* "hosted by" and "music with" credit lines on events, red like the flyer.
+   * The lighter red keeps small text readable on the green. */
+  --color-credit: var(--brand-red-light);
   /* The little line drawings on events. */
   --color-icon: var(--brand-gold);
 

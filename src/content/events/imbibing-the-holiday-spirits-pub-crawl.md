@@ -6,7 +6,8 @@ location: The Valkyrie
 cost: FREE
 category: Outside
 crowd: medium
-description: Hosted by the Heritage Museum Society. Music with Nathan Junior.
+hostedBy: Heritage Museum Society
+musicWith: Nathan Junior
 icon: cheers
 visible: true
 ---
