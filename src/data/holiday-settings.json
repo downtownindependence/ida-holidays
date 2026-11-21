@@ -10,7 +10,24 @@
   "votingFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSflY7sZxuWJNXrJXkYlXt7vsDJZMrdeWUFFSc6kyUUl82DQKg/viewform?usp=pp_url&entry.379137908=voter@example.com&entry.904993525=WINDOW1&entry.1188681222=WINDOW2&entry.1503085800=WINDOW3&entry.1325950096=NEWSLETTER",
   "participatingBusinesses": [
     {
-      "name": "Arena Sports Bar"
+      "name": "Arena Sports Bar & Grill",
+      "address": "174 S Main St",
+      "link": "https://www.arenasportsbar174.com/"
+    },
+    {
+      "name": "The Collection On Main",
+      "address": "278 S Main St",
+      "link": "https://www.facebook.com/thecollectiononmain.indy/"
+    },
+    {
+      "name": "Riverside Barber",
+      "address": "319 S Main St",
+      "link": "https://www.facebook.com/p/Riverside-Barber-100093034249273/"
+    },
+    {
+      "name": "Robins Roost Revived",
+      "address": "283 S 2nd St",
+      "link": "https://www.facebook.com/groups/1412955309917139/"
     }
   ],
   "volunteerCallout": {
